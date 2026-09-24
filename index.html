@@ -315,8 +315,8 @@
   .hours li:last-child{border-bottom:none;}
   .hours li .t{font-variant-numeric:lining-nums;}
   .hours li.closed .t{color:var(--muted);font-style:italic;}
-  .hours li.today{background:linear-gradient(90deg,rgba(231,201,119,.13),rgba(231,201,119,.03));border-radius:3px;}
-  .hours li.today .d::after{content:"Today";font-family:var(--display);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:#1a0a0c;background:var(--gold);padding:.15rem .45rem;border-radius:2px;margin-left:.7rem;vertical-align:.2em;}
+  .hours li.today{color:#d8bd7c;}
+  .hours li.today .d::after{content:"· Today";font-family:var(--display);font-size:.56rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-left:.5rem;vertical-align:.18em;}
   .card .note{margin-top:1.1rem;font-style:italic;color:var(--muted);font-size:1.05rem;}
 
   /* ---------- Closing CTA ---------- */
