@@ -729,6 +729,9 @@
     S = blank(); $('setup').open = true; renderAll();
   });
 
+  // embedded previews can't hand out files; the backup link only shows on the real site
+  if(window.self !== window.top) $('exportBtn').replaceWith(document.createTextNode('Backups work on the full site'));
+
   $('setup').open = firstRun;
   renderAll();
   requestAnimationFrame(loop);
