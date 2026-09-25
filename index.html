@@ -157,24 +157,29 @@
   .link{color:var(--ivory);text-decoration:underline;text-decoration-color:var(--gold-line);text-underline-offset:4px;cursor:pointer;background:none;border:none;transition:text-decoration-color .2s,color .2s;}
   .link:hover{text-decoration-color:var(--gold);color:#fff5de;}
 
-  /* ---------- Vacation notice ---------- */
-  .vaca-bar{
-    position:fixed;top:0;left:0;right:0;z-index:95;
-    transform:translateY(-110%);transition:transform .65s var(--ease);
-    display:flex;align-items:center;justify-content:center;gap:.75rem;
-    padding:.6rem 3rem .6rem clamp(1rem,4vw,3rem);padding-top:max(.6rem, env(safe-area-inset-top));
-    background:linear-gradient(180deg,#5a111c,#34090f);
-    border-bottom:1px solid rgba(211,178,108,.45);box-shadow:0 10px 30px rgba(0,0,0,.55);
-    font-family:var(--display);letter-spacing:.09em;text-transform:uppercase;
-    font-size:.7rem;font-weight:600;line-height:1.45;color:var(--ivory-dim);text-align:center;
-  }
-  .vaca-bar[hidden]{display:none;}
-  .vaca-bar.show{transform:none;}
-  .vaca-bar b{color:#fff3d8;font-weight:700;}
-  .vaca-bar .dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--gold-bright);box-shadow:0 0 10px var(--gold-bright);animation:vpulse 2.4s ease-in-out infinite;}
-  @keyframes vpulse{0%,100%{opacity:.35}50%{opacity:1}}
-  .vaca-bar .vx{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--ivory-dim);font-size:1.4rem;line-height:1;cursor:pointer;width:36px;height:36px;border-radius:50%;transition:background .2s,color .2s;}
-  .vaca-bar .vx:hover{color:var(--ivory);background:rgba(255,255,255,.1);}
+  /* ---------- Vacation notice: drops down over the top half of the screen ---------- */
+  .vaca-scrim{position:fixed;inset:0;z-index:96;background:rgba(4,2,3,.72);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;transition:opacity .6s ease;}
+  .vaca-scrim.show{opacity:1;}
+  .vaca{position:fixed;left:0;right:0;top:0;z-index:97;min-height:50vh;min-height:50svh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.9rem;
+    padding:calc(2.4rem + env(safe-area-inset-top)) 1.5rem 2.4rem;
+    background-color:#3a0b12;
+    background-image:radial-gradient(ellipse 70% 60% at 50% 0%, rgba(231,201,119,.12), transparent 70%), linear-gradient(180deg,#5a121d,#2a070c), url("img/velvet-900.webp");
+    background-size:auto,auto,cover;background-blend-mode:normal,normal,soft-light;
+    border-bottom:1px solid rgba(231,201,119,.55);border-radius:0 0 28px 28px;
+    box-shadow:0 30px 80px rgba(0,0,0,.75);
+    transform:translateY(-105%);transition:transform .85s cubic-bezier(.16,1,.3,1);}
+  .vaca.show{transform:none;}
+  .vaca[hidden],.vaca-scrim[hidden]{display:none;}
+  .vaca::before{content:"";position:absolute;inset:10px 10px 10px;border:1px solid rgba(231,201,119,.18);border-radius:0 0 20px 20px;pointer-events:none;}
+  .vaca .v-eye{font-family:var(--display);font-weight:600;font-size:.68rem;letter-spacing:.36em;text-transform:uppercase;color:var(--gold-bright);padding-left:.36em;display:flex;align-items:center;gap:.7rem;}
+  .vaca .v-eye::before,.vaca .v-eye::after{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));}
+  .vaca .v-eye::after{transform:scaleX(-1);}
+  .vaca h2{font-family:var(--black-letter);font-weight:400;color:var(--ivory);font-size:clamp(2.2rem,8vw,3.6rem);line-height:1.05;text-shadow:0 0 30px rgba(241,234,217,.2);}
+  .vaca .v-dates{font-family:var(--display);font-weight:700;color:#fff3d8;font-size:clamp(1.15rem,4.2vw,1.6rem);letter-spacing:.06em;}
+  .vaca p{color:var(--bone-dim);font-size:clamp(1.08rem,3.6vw,1.3rem);max-width:30rem;line-height:1.45;}
+  .vaca p b{color:var(--ivory);font-weight:600;}
+  .vaca .btn{margin-top:.6rem;min-width:min(300px,100%);}
 
   /* ---------- Nav ---------- */
   header.nav{
@@ -252,10 +257,11 @@
   .panel{
     position:relative;padding:2rem clamp(1.2rem,2.6vw,2.2rem) 1.2rem;
     border:1px solid rgba(211,178,108,.3);
-    background-color:#2a0a10;
-    background-image:linear-gradient(165deg,rgba(107,19,32,.55),rgba(20,6,9,.85)), image-set(url("img/velvet-900.webp") 1x, url("img/velvet-1672.webp") 2x);
-    background-size:auto,cover;background-blend-mode:normal,soft-light;
-    box-shadow:0 30px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
+    /* starts in the same red as the old service cards (#56111d), then fades darker toward the bottom */
+    background-color:#480d16;
+    background-image:image-set(url("img/velvet-900.webp") 1x, url("img/velvet-1672.webp") 2x), linear-gradient(180deg,#56111d 0%,#3f0c14 38%,#240709 75%,#140406 100%);
+    background-size:cover,auto;background-blend-mode:soft-light,normal;
+    box-shadow:0 30px 60px rgba(0,0,0,.5), inset 0 0 34px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
   }
   .panel::before{content:"";position:absolute;inset:7px;border:1px solid rgba(211,178,108,.12);pointer-events:none;}
   .panel h3{display:flex;align-items:center;gap:.9rem;font-family:var(--display);font-weight:700;letter-spacing:.32em;text-transform:uppercase;font-size:.95rem;color:var(--ivory);margin-bottom:.6rem;}
@@ -580,7 +586,6 @@
     .cart-in{gap:.9rem;}
     .cart-bar .btn{padding:.85rem 1.1rem;letter-spacing:.14em;}
     .cart-bar .link{display:none;}
-    .vaca-bar{font-size:.6rem;letter-spacing:.05em;gap:.5rem;padding-left:.9rem;padding-right:2.6rem;}
     .panel{padding:1.6rem 1.1rem .8rem;}
     .it-top h4{font-size:.98rem;white-space:normal;}
     .modal{padding:0;align-items:stretch;}
@@ -607,12 +612,15 @@
 <a class="skip" href="#services">Skip to services</a>
 <div class="site-bg" aria-hidden="true"></div>
 
-<!-- ============ VACATION NOTICE (sticky, dismissible, auto-expires) ============ -->
-<div class="vaca-bar" id="vacaBar" role="status" hidden>
-  <span class="dot" aria-hidden="true"></span>
-  <span>Randi is away <b>October 4&nbsp;&ndash;&nbsp;12</b> &middot; back in the chair Tuesday, October 13</span>
-  <button class="vx" id="vacaClose" type="button" aria-label="Dismiss vacation notice">&times;</button>
-</div>
+<!-- ============ VACATION NOTICE (drops down over half the screen; text is filled in from VACATION below) ============ -->
+<div class="vaca-scrim" id="vacaScrim" hidden></div>
+<section class="vaca" id="vaca" role="dialog" aria-modal="true" aria-labelledby="vacaTitle" hidden>
+  <div class="v-eye">A note from Randi</div>
+  <h2 id="vacaTitle">Away on vacation</h2>
+  <div class="v-dates" id="vacaDates"></div>
+  <p id="vacaText"></p>
+  <button class="btn" id="vacaGo" type="button">Continue to Booking <span class="arr" aria-hidden="true">&rarr;</span></button>
+</section>
 
 <!-- ============ NAV ============ -->
 <header class="nav" id="nav">
@@ -886,11 +894,13 @@
 
   /* ============================================================
      VACATION NOTICE
-     Edit the three dates below and the banner takes care of itself.
-       showFrom  — first day the reminder appears
-       lastDay   — last day she is away (banner hides after this day)
+     Edit the dates below and the notice takes care of itself — its wording,
+     and the day she's back, are worked out from them.
+       showFrom  — first day the notice appears
+       firstDay  — first day she is away
+       lastDay   — last day she is away (notice stops showing after this day)
        blockDays — true: those days are also marked "Away" in the booking calendar
-     Dismissing it hides it for THIS visit only; it comes back on the next one.
+     "Continue to Booking" hides it for THIS visit only; it comes back on the next one.
      ============================================================ */
   const VACATION = {
     showFrom : '2026-09-14',
@@ -902,21 +912,42 @@
   function vacaActive(){ const t = dayKey(new Date()); return t >= VACATION.showFrom && t <= VACATION.lastDay; }
   function isVacationDay(ds){ return VACATION.blockDays && ds >= VACATION.firstDay && ds <= VACATION.lastDay; }
 
+  // Dates for display, worked out from VACATION so only the three dates above ever need editing
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function vDate(ds){ const [y,m,d] = ds.split('-').map(Number); return new Date(y, m-1, d); }
+  function vBack(){   // first day after the trip that she's normally in
+    const d = vDate(VACATION.lastDay);
+    for(let i=1;i<=7;i++){ const n = new Date(d.getFullYear(), d.getMonth(), d.getDate()+i); if(HOURS[n.getDay()]) return n; }
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()+1);
+  }
+  function vRange(){
+    const a = vDate(VACATION.firstDay), b = vDate(VACATION.lastDay);
+    return a.getMonth() === b.getMonth() ? MONTHS[a.getMonth()]+' '+a.getDate()+' – '+b.getDate()
+                                         : MONTHS[a.getMonth()]+' '+a.getDate()+' – '+MONTHS[b.getMonth()]+' '+b.getDate();
+  }
+
   (function(){
-    const bar = document.getElementById('vacaBar');
+    const box = document.getElementById('vaca'), scrim = document.getElementById('vacaScrim');
     let dismissed = false;
     try{ dismissed = sessionStorage.getItem(VACATION.key) === '1'; }catch(e){}
-    if(!vacaActive() || dismissed){ bar.remove(); return; }
-    const size = () => document.documentElement.style.setProperty('--vaca-h', bar.offsetHeight + 'px');
-    bar.hidden = false;
-    window.addEventListener('resize', () => { if(bar.classList.contains('show')) size(); });
-    setTimeout(() => { bar.classList.add('show'); size(); }, 500);
-    document.getElementById('vacaClose').onclick = () => {
+    if(!vacaActive() || dismissed){ box.remove(); scrim.remove(); return; }
+    const back = vBack();
+    const today = dayKey(new Date());
+    document.getElementById('vacaDates').textContent = vRange();
+    document.getElementById('vacaText').innerHTML = (today >= VACATION.firstDay ? 'Randi is out of town right now.' : 'Randi will be out of town.') +
+      ' She’s back in the chair <b>' + back.toLocaleDateString('en-US',{weekday:'long', month:'long', day:'numeric'}) + '</b>. Every other day books as usual.';
+    box.hidden = false; scrim.hidden = false;
+    document.documentElement.classList.add('locked');
+    setTimeout(() => { box.classList.add('show'); scrim.classList.add('show'); setTimeout(() => document.getElementById('vacaGo').focus({preventScroll:true}), 500); }, 450);
+    function go(toMenu){
       try{ sessionStorage.setItem(VACATION.key, '1'); }catch(e){}
-      bar.classList.remove('show');
-      document.documentElement.style.setProperty('--vaca-h', '0px');
-      setTimeout(() => bar.remove(), 700);
-    };
+      box.classList.remove('show'); scrim.classList.remove('show');
+      document.documentElement.classList.remove('locked');
+      setTimeout(() => { box.remove(); scrim.remove(); }, 850);
+      if(toMenu) document.getElementById('services').scrollIntoView({behavior:'smooth'});
+    }
+    document.getElementById('vacaGo').onclick = () => go(true);
+    document.addEventListener('keydown', function esc(e){ if(e.key === 'Escape' && document.getElementById('vaca')){ go(false); document.removeEventListener('keydown', esc); } });
   })();
 
   /* ---------- live "open now" line + today's row in the hours ---------- */
@@ -925,7 +956,7 @@
     const now = tzNow(), todayKey = dayKey(new Date());
     let txt, open = false;
     if(isVacationDay(todayKey)){
-      txt = 'Away · back Tue, Oct 13';
+      txt = 'Away · back ' + vBack().toLocaleDateString('en-US',{weekday:'short', month:'short', day:'numeric'});
     } else {
       const h = HOURS[now.dow];
       if(h && now.min >= h[0] && now.min < h[1]){ open = true; txt = 'Open now · until ' + fmtClock(h[1]); }

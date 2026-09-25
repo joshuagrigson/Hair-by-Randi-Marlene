@@ -52,18 +52,20 @@ Names just have to match something in the `SERVICES` list above it — apostroph
 style and capitalisation don't matter. Anything already in the cart is never
 offered, so the screen is skipped entirely when there's nothing left to suggest.
 
-**Vacation notice** — the sticky bar at the top:
+**Vacation notice** — drops down over the top half of the screen, dims the page behind it,
+and clears with a **Continue to Booking** button that takes people to the menu. Its wording,
+including the day she's back, is worked out from these dates:
 
 ```js
 const VACATION = {
-  showFrom : '2026-09-14',   // first day the reminder appears
+  showFrom : '2026-09-14',   // first day the notice appears
   firstDay : '2026-10-04',   // first day away
-  lastDay  : '2026-10-12',   // last day away — banner disappears after this
-  blockDays: true,           // also grey those days out in the booking calendar
+  lastDay  : '2026-10-12',   // last day away — notice stops showing after this
+  blockDays: true,           // also mark those days "Away" in the booking calendar
   key      : 'randi-vaca-2026-10'
 };
 ```
 
 Change `key` whenever you set a new vacation, so anyone who dismissed the old
-one still sees the new one. Dismissing hides it for that visit only — it comes
-back next time they open the site.
+one still sees the new one. Continue to Booking hides it for that visit only — it
+comes back next time they open the site.
