@@ -1,4 +1,7 @@
 # keep the repo README off the public site
 /README.md    /             301!
 
+# Price Pulse is its own app with its own deploy — keep it off Randi's site
+/pricing-pulse/*  /          301!
+
 /*            /index.html   200

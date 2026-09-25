@@ -69,3 +69,28 @@ const VACATION = {
 Change `key` whenever you set a new vacation, so anyone who dismissed the old
 one still sees the new one. Continue to Booking hides it for that visit only — it
 comes back next time they open the site.
+
+## Price Pulse (`pricing-pulse/`)
+
+A separate app that lives in this repo but is **not** part of Randi's site — `_redirects`
+bounces `/pricing-pulse/*` back to the home page so it never shows up on hairbyrandimarlene.com.
+Deploy the `pricing-pulse/` folder on its own.
+
+A business owner picks their industry, state and kind of area, enters what they charge for each
+service and **locks it in**. Each service then gets a live heart monitor against the area average:
+
+| Pulse | Price vs area average | Rhythm |
+|---|---|---|
+| Premium | above 120% | fast beat (blue) |
+| Healthy | 92–120% | steady beat (green) |
+| Weak | 80–92% | slow, faint beat (amber) |
+| Flatline | under 80% | flat line, alarm: "you charge too low" (red) |
+
+The area average starts as a typical US price for the service, scaled by the state's price level
+(approximate BEA Regional Price Parities) and the area type. Those are estimates, not a survey. Every
+competitor price the owner adds for a service pulls the average toward the real local number (the
+estimate counts as two data points). Enter how many of a service you do a week and it shows what
+under-pricing costs per month. Everything saves in the owner's own browser; there's a backup download.
+
+The starter prices, state levels and the four bands are constants at the top of the `<script>`
+in `pricing-pulse/index.html` (`INDUSTRIES`, `STATES`, `AREAS`, `BANDS`).

@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Price Pulse</title>
+<meta name="description" content="Lock in what you charge. Price Pulse keeps a heartbeat on how your prices sit against your area's average — and flatlines when you're charging too little.">
+<meta name="theme-color" content="#07100c">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2307100c'/%3E%3Cpath d='M3 18h7l2-5 3 11 3-15 2 9h9' fill='none' stroke='%2339ff88' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#07100c; --panel:#0d1813; --panel-2:#11201a; --line:#1b3328; --grid:#12271e;
+    --text:#dcf3e7; --muted:#86a698; --faint:#56736a;
+    --ok:#39ff88; --weak:#ffc234; --flat:#ff4d5e; --prem:#4dd8ff; --idle:#4a6358;
+    --radius:14px;
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans:'Space Grotesk', system-ui, -apple-system, Segoe UI, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg); color:var(--text); font-family:var(--sans); font-size:16px; line-height:1.45;
+       -webkit-font-smoothing:antialiased; min-height:100vh;
+       background-image:radial-gradient(1200px 600px at 50% -200px, #0f2a1d 0%, transparent 70%);}
+  button,input,select{font:inherit; color:inherit}
+  .wrap{max-width:880px; margin:0 auto; padding:18px 16px 60px}
+
+  /* header */
+  header{display:flex; align-items:center; gap:12px; margin:4px 0 18px}
+  .logo{width:38px; height:38px; flex:none}
+  h1{font-size:22px; margin:0; letter-spacing:-.01em}
+  .tag{color:var(--muted); font-size:13px; margin:0}
+  .hdr-actions{margin-left:auto; display:flex; gap:8px}
+  .icon-btn{background:var(--panel); border:1px solid var(--line); border-radius:10px; height:38px; min-width:38px;
+            padding:0 10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:13px; color:var(--muted)}
+  .icon-btn:hover{color:var(--text); border-color:#2a4a3b}
+  .icon-btn[aria-pressed="true"]{color:var(--ok); border-color:#1f5a3a}
+
+  /* cards */
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:16px; margin-bottom:14px}
+  .card h2{font-size:14px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin:0 0 12px; font-weight:600}
+
+  /* setup */
+  .setup-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .setup-grid label{display:flex; flex-direction:column; gap:5px; font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+  .setup-grid .full{grid-column:1/-1}
+  select,input[type=text],input[type=number]{background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+            padding:10px 12px; font-size:16px; width:100%; text-transform:none; letter-spacing:0; outline:none}
+  select:focus,input:focus{border-color:var(--ok); box-shadow:0 0 0 3px rgba(57,255,136,.15)}
+  .setup-foot{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-top:12px; font-size:13px; color:var(--muted)}
+  .mult{font-family:var(--mono); color:var(--text)}
+  .link-btn{background:none; border:0; color:var(--prem); cursor:pointer; padding:4px 0; font-size:13px; text-decoration:underline; text-underline-offset:3px}
+  details.setup > summary{list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px}
+  details.setup > summary::-webkit-details-marker{display:none}
+  details.setup > summary h2{margin:0}
+  details.setup > summary .sum-text{color:var(--muted); font-size:13px; margin-left:auto; text-align:right}
+  details.setup[open] > summary{margin-bottom:12px}
+
+  /* main monitor */
+  .monitor{background:#040a07; border:1px solid var(--line); border-radius:18px; padding:14px; margin-bottom:14px; position:relative; overflow:hidden}
+  .mon-top{display:flex; align-items:flex-start; gap:12px; flex-wrap:wrap}
+  .mon-label{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--faint); text-transform:uppercase}
+  .mon-status{font-size:22px; font-weight:700; margin-top:2px}
+  .mon-read{margin-left:auto; text-align:right}
+  .mon-num{font-family:var(--mono); font-size:44px; font-weight:700; line-height:1}
+  .mon-num small{font-size:18px; opacity:.7}
+  .heart{display:inline-block; transform-origin:center; transition:transform .12s ease-out; margin-right:6px}
+  .heart.beat{transform:scale(1.28)}
+  canvas.ecg{display:block; width:100%}
+  #mainEcg{height:150px; margin:10px 0 6px}
+  .mon-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:6px}
+  .stat{background:#08140f; border:1px solid var(--line); border-radius:10px; padding:8px 10px}
+  .stat b{display:block; font-family:var(--mono); font-size:20px}
+  .stat span{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em}
+  .alarm{margin-top:10px; border-radius:10px; padding:10px 12px; font-size:14px; display:none}
+  .alarm.on{display:block}
+  .alarm.flat{background:rgba(255,77,94,.1); border:1px solid rgba(255,77,94,.45); color:#ffc7cd}
+  .alarm.money{background:rgba(255,194,52,.08); border:1px solid rgba(255,194,52,.35); color:#ffe6a8}
+  .alarm b{color:#fff}
+  .monitor.is-flat{animation:alarm 1.2s steps(2,end) infinite}
+  @keyframes alarm{50%{border-color:rgba(255,77,94,.7); box-shadow:inset 0 0 40px rgba(255,77,94,.12)}}
+
+  /* legend */
+  .legend{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12px; color:var(--muted); margin:2px 0 14px}
+  .legend i{display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; vertical-align:1px}
+
+  /* services */
+  .svc-head{display:flex; align-items:center; gap:10px; margin:22px 0 10px}
+  .svc-head h2{font-size:14px; text-transform:uppercase; letter-spacing:.12em; color:var(--muted); margin:0; font-weight:600}
+  .svc-head .grow{flex:1}
+  .btn{background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:9px 14px; cursor:pointer; font-size:14px; font-weight:600}
+  .btn:hover{border-color:#2d5543}
+  .btn.primary{background:var(--ok); color:#03140b; border-color:var(--ok)}
+  .btn.primary:hover{filter:brightness(1.08)}
+  .btn.danger{color:var(--flat)}
+  .btn.small{padding:6px 10px; font-size:13px}
+
+  .svc{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); margin-bottom:10px; overflow:hidden; border-left:4px solid var(--c, var(--idle))}
+  .svc-main{padding:12px 14px 12px}
+  .svc-row1{display:flex; align-items:baseline; gap:10px}
+  .svc-name{font-weight:600; font-size:17px}
+  .svc-badge{margin-left:auto; font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--c, var(--idle));
+             border:1px solid currentColor; border-radius:999px; padding:2px 8px; white-space:nowrap}
+  .svc canvas.ecg{height:46px; margin:8px 0 10px; background:#040a07; border-radius:8px}
+  .svc-nums{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:8px; align-items:stretch}
+  .box{background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:7px 10px; min-width:0}
+  .box .k{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); display:flex; align-items:center; gap:5px}
+  .box .v{font-family:var(--mono); font-size:20px; font-weight:700; white-space:nowrap}
+  .box .s{font-size:11px; color:var(--faint); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .price-edit{display:flex; gap:6px; align-items:center; margin-top:2px}
+  .price-edit .dollar{font-family:var(--mono); color:var(--muted)}
+  .price-edit input{padding:5px 8px; font-family:var(--mono); font-size:18px; width:100%; min-width:0}
+  .lock-btn{background:var(--ok); color:#03140b; border:0; border-radius:8px; padding:6px 10px; font-weight:700; cursor:pointer; font-size:13px; white-space:nowrap}
+  .lock-btn:disabled{opacity:.35; cursor:not-allowed}
+  .unlock{background:none; border:0; color:var(--muted); cursor:pointer; font-size:11px; padding:0; text-decoration:underline; text-underline-offset:2px}
+  .verdict{margin-top:10px; font-size:14px; color:var(--muted)}
+  .verdict b{color:var(--text)}
+  .verdict.flat{color:#ffb3bb}
+  .verdict.flat b{color:#fff}
+
+  .svc details{border-top:1px solid var(--line)}
+  .svc details > summary{list-style:none; cursor:pointer; padding:9px 14px; font-size:13px; color:var(--muted); display:flex; align-items:center; gap:8px}
+  .svc details > summary::-webkit-details-marker{display:none}
+  .svc details > summary::before{content:'▸'; transition:transform .15s}
+  .svc details[open] > summary::before{transform:rotate(90deg)}
+  .svc details > summary:hover{color:var(--text)}
+  .more{padding:4px 14px 14px; display:grid; gap:12px}
+  .more h3{margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:600}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px}
+  .chip{background:var(--panel-2); border:1px solid var(--line); border-radius:999px; padding:4px 6px 4px 10px; font-size:13px; display:inline-flex; align-items:center; gap:6px}
+  .chip b{font-family:var(--mono)}
+  .chip button{background:none; border:0; color:var(--faint); cursor:pointer; font-size:15px; line-height:1; padding:0 4px}
+  .chip button:hover{color:var(--flat)}
+  .add-local{display:grid; grid-template-columns:110px 1fr auto; gap:6px}
+  .add-local input{padding:7px 10px; font-size:15px}
+  .row-inline{display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:14px; color:var(--muted)}
+  .row-inline input{width:90px; padding:7px 10px; font-size:15px}
+  .hint{font-size:12px; color:var(--faint); margin:4px 0 0}
+  .history{font-size:13px; color:var(--muted); font-family:var(--mono)}
+
+  .add-svc{display:grid; grid-template-columns:1fr auto; gap:8px; margin-top:6px}
+  .empty{color:var(--muted); text-align:center; padding:24px; border:1px dashed var(--line); border-radius:var(--radius)}
+
+  footer{margin-top:28px; font-size:12px; color:var(--faint); line-height:1.6}
+  footer p{margin:0 0 8px}
+  .sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+
+  @media (max-width:560px){
+    .setup-grid{grid-template-columns:1fr}
+    .mon-stats{grid-template-columns:repeat(2,1fr)}
+    .mon-num{font-size:36px}
+    .mon-status{font-size:19px}
+    .svc-nums{grid-template-columns:1fr 1fr}
+    .svc-nums .box:first-child{grid-column:1/-1}
+    .add-local{grid-template-columns:90px 1fr auto}
+    .hdr-actions .txt{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .monitor.is-flat{animation:none}
+    .heart{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#0d1813" stroke="#1b3328"/><path d="M3 18h7l2-5 3 11 3-15 2 9h9" fill="none" stroke="#39ff88" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></svg>
+    <div>
+      <h1>Price Pulse</h1>
+      <p class="tag">Lock in what you charge. Keep a heartbeat on your area.</p>
+    </div>
+    <div class="hdr-actions">
+      <button class="icon-btn" id="soundBtn" aria-pressed="false" title="Monitor sound"><span aria-hidden="true">🔈</span><span class="txt">Sound</span></button>
+    </div>
+  </header>
+
+  <details class="card setup" id="setup">
+    <summary><h2>Your business</h2><span class="sum-text" id="setupSummary"></span></summary>
+    <div class="setup-grid">
+      <label class="full">Business name
+        <input type="text" id="biz" placeholder="e.g. Fresh Fades Barbershop" autocomplete="organization">
+      </label>
+      <label>Industry
+        <select id="industry"></select>
+      </label>
+      <label>State
+        <select id="state"></select>
+      </label>
+      <label class="full">Your area
+        <select id="area"></select>
+      </label>
+    </div>
+    <div class="setup-foot">
+      <span>Area price level: <span class="mult" id="multOut"></span> of the US average</span>
+      <span style="flex:1"></span>
+      <button class="link-btn" id="starterBtn"></button>
+      <button class="link-btn" id="demoBtn">Load a demo shop</button>
+    </div>
+  </details>
+
+  <section class="monitor" id="monitor" aria-live="polite">
+    <div class="mon-top">
+      <div>
+        <div class="mon-label" id="monLabel">Overall pulse</div>
+        <div class="mon-status" id="monStatus">—</div>
+      </div>
+      <div class="mon-read">
+        <div class="mon-label">vs area average</div>
+        <div class="mon-num"><span class="heart" id="heart" aria-hidden="true">♥</span><span id="monNum">--</span><small>%</small></div>
+      </div>
+    </div>
+    <canvas class="ecg" id="mainEcg" aria-hidden="true"></canvas>
+    <div class="mon-stats">
+      <div class="stat"><b id="stOk" style="color:var(--ok)">0</b><span>Healthy</span></div>
+      <div class="stat"><b id="stPrem" style="color:var(--prem)">0</b><span>Premium</span></div>
+      <div class="stat"><b id="stWeak" style="color:var(--weak)">0</b><span>Weak</span></div>
+      <div class="stat"><b id="stFlat" style="color:var(--flat)">0</b><span>Flatline</span></div>
+    </div>
+    <div class="alarm flat" id="alarmFlat"></div>
+    <div class="alarm money" id="alarmMoney"></div>
+  </section>
+
+  <div class="legend">
+    <span><i style="background:var(--ok)"></i>Healthy · 92–120% of area avg</span>
+    <span><i style="background:var(--prem)"></i>Premium · above 120%</span>
+    <span><i style="background:var(--weak)"></i>Weak · 80–92%</span>
+    <span><i style="background:var(--flat)"></i>Flatline · under 80%</span>
+  </div>
+
+  <div class="svc-head">
+    <h2>Your services</h2><span class="grow"></span>
+  </div>
+  <div id="list"></div>
+
+  <div class="card">
+    <h2>Add a service</h2>
+    <form class="add-svc" id="addSvc">
+      <input type="text" id="newSvc" placeholder="Service name, e.g. Kids Fade" required>
+      <button class="btn" type="submit">Add</button>
+    </form>
+    <p class="hint">Services we have no estimate for get their area average from the local prices you add to them.</p>
+  </div>
+
+  <footer>
+    <p><b>Where the area average comes from.</b> Each service starts from a typical US price for that service, scaled by your state's price level (approximate BEA Regional Price Parities) and whether you're rural, a small city, a suburb or a big city. Those starting numbers are estimates, not a survey. Every competitor price you add under “Local prices I've seen” pulls the average toward what your area actually charges — the estimate counts as two data points, so three or four real prices outweigh it.</p>
+    <p>Everything you enter is saved only in this browser. <button class="link-btn" id="exportBtn">Download a backup</button> · <button class="link-btn" id="importBtn">Restore a backup</button> · <button class="link-btn" id="resetBtn" style="color:var(--flat)">Start over</button></p>
+    <input type="file" id="importFile" accept="application/json" hidden>
+  </footer>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ============================================================
+     DATA
+     Typical US prices (2025–26) — starting estimates only.
+     ============================================================ */
+  const INDUSTRIES = {
+    barber: { label:'Barber', services:[
+      ["Men's Cut",32],["Skin Fade",40],["Kids Cut",24],["Senior Cut",24],["Clean Up / Line-Up",15],
+      ["Beard Trim",20],["Cut + Beard",50],["Hot Towel Shave",38],["Ladies Cut",45],["Eyebrow Wax",15],
+      ["Nose Hair Wax",12],["Ear Hair Wax",12],["Express Facial",30],["Add Wash",8]
+    ]},
+    salon: { label:'Hair Salon', services:[
+      ["Women's Cut & Style",65],["Men's Cut",32],["Kids Cut",28],["Blowout",45],["Single-Process Color",100],
+      ["Root Touch-Up",75],["Partial Highlights",120],["Full Highlights",165],["Balayage",210],
+      ["Gloss / Toner",50],["Keratin Treatment",250],["Deep Conditioning",30],["Updo / Formal Style",85]
+    ]},
+    nails: { label:'Nail Salon', services:[
+      ["Classic Manicure",25],["Gel Manicure",40],["Classic Pedicure",40],["Gel Pedicure",52],
+      ["Acrylic Full Set",55],["Acrylic Fill",38],["Dip Powder",45],["Gel-X Full Set",65],["Nail Art (per set)",15]
+    ]},
+    lash: { label:'Lash & Brow', services:[
+      ["Classic Lash Full Set",130],["Hybrid Lash Full Set",155],["Volume Lash Full Set",180],["Lash Fill (2 wk)",65],
+      ["Lash Lift + Tint",80],["Brow Wax",18],["Brow Tint",20],["Brow Lamination",80],["Brow Shaping + Tint",38]
+    ]},
+    massage: { label:'Massage', services:[
+      ["Swedish · 60 min",90],["Swedish · 90 min",130],["Deep Tissue · 60 min",105],["Deep Tissue · 90 min",150],
+      ["Hot Stone · 60 min",115],["Prenatal · 60 min",95],["Chair Massage · 15 min",25]
+    ]},
+    grooming: { label:'Dog Grooming', services:[
+      ["Full Groom · Small Dog",65],["Full Groom · Medium Dog",80],["Full Groom · Large Dog",100],
+      ["Bath & Brush",45],["Nail Trim",15],["De-shed Treatment",40],["Puppy Intro Groom",40]
+    ]},
+    detailing: { label:'Auto Detailing', services:[
+      ["Exterior Hand Wash",40],["Interior Detail",150],["Full Detail · Car",225],["Full Detail · SUV/Truck",275],
+      ["Paint Correction (1-step)",400],["Ceramic Coating",900],["Headlight Restoration",80]
+    ]},
+    custom: { label:'Something else', services:[] }
+  };
+
+  // Approximate BEA Regional Price Parities (all items, US = 100).
+  const STATES = {
+    AL:['Alabama',87.6],AK:['Alaska',101.3],AZ:['Arizona',99.3],AR:['Arkansas',86.7],CA:['California',112.6],
+    CO:['Colorado',103.3],CT:['Connecticut',104.0],DE:['Delaware',99.0],DC:['District of Columbia',111.0],FL:['Florida',101.8],
+    GA:['Georgia',94.2],HI:['Hawaii',110.6],ID:['Idaho',93.3],IL:['Illinois',99.0],IN:['Indiana',90.4],
+    IA:['Iowa',88.1],KS:['Kansas',89.0],KY:['Kentucky',87.8],LA:['Louisiana',89.8],ME:['Maine',97.0],
+    MD:['Maryland',104.4],MA:['Massachusetts',108.0],MI:['Michigan',93.0],MN:['Minnesota',97.4],MS:['Mississippi',86.5],
+    MO:['Missouri',89.3],MT:['Montana',94.0],NE:['Nebraska',90.4],NV:['Nevada',97.8],NH:['New Hampshire',104.0],
+    NJ:['New Jersey',108.8],NM:['New Mexico',90.4],NY:['New York',108.4],NC:['North Carolina',92.3],ND:['North Dakota',88.7],
+    OH:['Ohio',90.3],OK:['Oklahoma',87.8],OR:['Oregon',101.5],PA:['Pennsylvania',96.4],RI:['Rhode Island',99.4],
+    SC:['South Carolina',91.3],SD:['South Dakota',88.2],TN:['Tennessee',90.5],TX:['Texas',96.4],UT:['Utah',97.0],
+    VT:['Vermont',99.0],VA:['Virginia',101.1],WA:['Washington',108.4],WV:['West Virginia',86.0],WI:['Wisconsin',92.3],
+    WY:['Wyoming',91.9]
+  };
+
+  const AREAS = {
+    rural  : ['Rural / small town',     0.85],
+    small  : ['Small city',             0.93],
+    suburb : ['Suburb',                 1.00],
+    metro  : ['Big city',               1.12],
+    prime  : ['Downtown / high-end area',1.28]
+  };
+
+  const PRIOR = 2;   // the estimate counts as this many local prices
+  const BANDS = { flat:0.80, weak:0.92, prem:1.20 };
+  const MODES = {
+    ok   : { key:'ok',   label:'Healthy',  color:'#39ff88', bpm:72,  amp:1.00 },
+    prem : { key:'prem', label:'Premium',  color:'#4dd8ff', bpm:112, amp:1.00 },
+    weak : { key:'weak', label:'Weak',     color:'#ffc234', bpm:46,  amp:0.42 },
+    flat : { key:'flat', label:'Flatline', color:'#ff4d5e', bpm:0,   amp:0 },
+    idle : { key:'idle', label:'Not locked', color:'#4a6358', bpm:0, amp:0 }
+  };
+
+  /* ============================================================
+     STATE
+     ============================================================ */
+  const KEY = 'pricepulse.v1';
+  const uid = () => Math.random().toString(36).slice(2,10);
+  const today = () => new Date().toISOString().slice(0,10);
+  const svc = (name, base, extra) => Object.assign({ id:uid(), name, base, price:null, locked:false, lockedAt:null, history:[], perWeek:null, local:[] }, extra||{});
+  const starter = ind => INDUSTRIES[ind].services.map(([n,b]) => svc(n,b));
+
+  function blank(){ return { biz:'', industry:'barber', state:'TX', area:'suburb', sound:false, services:starter('barber') }; }
+  function load(){
+    try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s && Array.isArray(s.services)) return s; }catch(e){}
+    return null;
+  }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+
+  let S = load();
+  const firstRun = !S;
+  if(!S) S = blank();
+
+  /* ============================================================
+     MATH
+     ============================================================ */
+  const mult = () => (STATES[S.state] ? STATES[S.state][1]/100 : 1) * (AREAS[S.area] ? AREAS[S.area][1] : 1);
+
+  function areaAvg(s){
+    const est = s.base != null ? s.base * mult() : null;
+    const n = s.local.length, sum = s.local.reduce((a,b) => a + b.p, 0);
+    if(est == null) return n ? { v:sum/n, src:`${n} local price${n>1?'s':''}`, n } : null;
+    if(!n) return { v:est, src:'Estimate', n:0 };
+    return { v:(est*PRIOR + sum)/(PRIOR + n), src:`Estimate + ${n} local`, n };
+  }
+  function modeFor(ratio){
+    if(ratio == null) return MODES.idle;
+    if(ratio < BANDS.flat) return MODES.flat;
+    if(ratio < BANDS.weak) return MODES.weak;
+    if(ratio > BANDS.prem) return MODES.prem;
+    return MODES.ok;
+  }
+  function read(s){
+    const avg = areaAvg(s);
+    const ratio = (s.locked && s.price != null && avg && avg.v > 0) ? s.price / avg.v : null;
+    const mode = s.locked ? (avg ? modeFor(ratio) : MODES.idle) : MODES.idle;
+    const monthlyGap = (ratio != null && ratio < 1 && s.perWeek) ? (avg.v - s.price) * s.perWeek * 52/12 : 0;
+    return { avg, ratio, mode, monthlyGap };
+  }
+  function overall(){
+    let num = 0, den = 0; const counts = { ok:0, prem:0, weak:0, flat:0 }, flat = [], weak = []; let gap = 0, locked = 0;
+    S.services.forEach(s => {
+      const r = read(s);
+      if(r.ratio == null) return;
+      locked++;
+      const w = s.perWeek || 1;
+      num += s.price * w; den += r.avg.v * w;
+      counts[r.mode.key]++;
+      if(r.mode.key === 'flat') flat.push(s);
+      if(r.mode.key === 'weak') weak.push(s);
+      gap += r.monthlyGap;
+    });
+    const ratio = den ? num/den : null;
+    return { ratio, mode: modeFor(ratio), counts, flat, weak, gap, locked };
+  }
+
+  const money = v => '$' + (Math.round(v*100)/100).toFixed(v % 1 && v < 100 ? 2 : 0);
+  const dollars = v => '$' + Math.round(v).toLocaleString();
+  const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmtDate = d => { try{ return new Date(d+'T12:00:00').toLocaleDateString(undefined,{month:'short', day:'numeric', year:'numeric'}); }catch(e){ return d; } };
+  const healthyFloor = avg => Math.ceil(avg * BANDS.weak);
+
+  /* ============================================================
+     ECG MONITORS
+     ============================================================ */
+  const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const g = (x, m, s) => Math.exp(-((x-m)*(x-m)) / (2*s*s));
+  // one heartbeat, phase 0..1: P wave, QRS complex, T wave
+  const wave = p => 0.12*g(p,.16,.025) - 0.14*g(p,.275,.009) + 1.0*g(p,.30,.011) - 0.28*g(p,.325,.011) + 0.26*g(p,.50,.042);
+
+  const monitors = new Set();
+  const ro = 'ResizeObserver' in window ? new ResizeObserver(es => es.forEach(e => e.target._mon && e.target._mon.resize())) : null;
+
+  class Monitor {
+    constructor(canvas, getMode, opts){
+      this.c = canvas; this.ctx = canvas.getContext('2d'); this.getMode = getMode;
+      this.o = Object.assign({ speed:90, grid:false, glow:false, onBeat:null }, opts);
+      this.col = 0; this.beat = -1; this.w = 0; this.h = 0; this.ys = null;
+      canvas._mon = this; monitors.add(this); if(ro) ro.observe(canvas);
+      this.resize();
+    }
+    resize(){
+      const r = this.c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+      const w = Math.max(20, Math.round(r.width)), h = Math.max(20, Math.round(r.height));
+      if(w === this.w && h === this.h) return;
+      this.w = w; this.h = h; this.c.width = w*dpr; this.c.height = h*dpr;
+      this.ctx.setTransform(dpr,0,0,dpr,0,0);
+      this.ys = new Float32Array(w).fill(NaN);
+      if(REDUCED) this.fillStatic(); else { this.col = 0; }
+      this.draw();
+    }
+    sample(t, m){
+      if(!m.bpm) return (Math.random() - .5) * (m.key === 'flat' ? .02 : .008);
+      return wave((t * m.bpm / 60) % 1) * m.amp;
+    }
+    column(gcol, m){
+      // sample 4 points inside the pixel and keep the most extreme so the narrow R spike is never skipped
+      const sp = this.o.speed; let best = 0;
+      for(let k = 0; k < 4; k++){ const v = this.sample((gcol + k/4)/sp, m); if(Math.abs(v) > Math.abs(best)) best = v; }
+      return best;
+    }
+    fillStatic(){ const m = this.getMode(); for(let x = 0; x < this.w; x++) this.ys[x] = this.column(x, m); this.col = this.w; }
+    step(dt){
+      const m = this.getMode(), sp = this.o.speed;
+      const prev = this.col; this.col += sp * dt;
+      const gap = Math.round(this.w * 0.05) + 6;
+      for(let x = Math.floor(prev) + 1; x <= Math.floor(this.col); x++){
+        const i = x % this.w;
+        this.ys[i] = this.column(x, m);
+        for(let j = 1; j <= gap; j++) this.ys[(x + j) % this.w] = NaN;
+      }
+      if(m.bpm && this.o.onBeat){
+        const b = Math.floor(this.col / sp * m.bpm / 60 - .3);
+        if(b !== this.beat){ if(this.beat !== -1) this.o.onBeat(m); this.beat = b; }
+      }
+      this.lastMode = m;
+    }
+    draw(){
+      const { ctx, w, h } = this; if(!this.ys) return;
+      const m = this.lastMode || this.getMode();
+      ctx.clearRect(0,0,w,h);
+      if(this.o.grid){
+        ctx.strokeStyle = '#0e2219'; ctx.lineWidth = 1; ctx.beginPath();
+        for(let x = .5; x < w; x += 22){ ctx.moveTo(x,0); ctx.lineTo(x,h); }
+        for(let y = .5; y < h; y += 22){ ctx.moveTo(0,y); ctx.lineTo(w,y); }
+        ctx.stroke();
+      }
+      const mid = h * 0.6, amp = h * 0.46;
+      ctx.lineWidth = this.o.grid ? 2.2 : 1.8; ctx.lineJoin = 'round'; ctx.strokeStyle = m.color;
+      if(this.o.glow){ ctx.shadowColor = m.color; ctx.shadowBlur = 10; }
+      ctx.beginPath(); let pen = false;
+      for(let x = 0; x < w; x++){
+        const y = this.ys[x];
+        if(Number.isNaN(y)){ pen = false; continue; }
+        const py = mid - y*amp;
+        if(pen) ctx.lineTo(x, py); else { ctx.moveTo(x, py); pen = true; }
+      }
+      ctx.stroke(); ctx.shadowBlur = 0;
+      if(!REDUCED){
+        const cx = Math.floor(this.col) % w, cy = this.ys[cx];
+        if(!Number.isNaN(cy)){ ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(cx, mid - cy*amp, this.o.grid ? 3 : 2, 0, 7); ctx.fill(); }
+      }
+    }
+    destroy(){ monitors.delete(this); if(ro) ro.unobserve(this.c); }
+  }
+
+  let last = performance.now();
+  function loop(now){
+    const dt = Math.min(.05, (now - last)/1000); last = now;
+    monitors.forEach(m => { if(!document.body.contains(m.c)){ m.destroy(); return; } if(!REDUCED) m.step(dt); m.draw(); });
+    requestAnimationFrame(loop);
+  }
+
+  /* ============================================================
+     SOUND
+     ============================================================ */
+  let ac = null;
+  function tone(freq, dur, vol){
+    if(!S.sound) return;
+    try{
+      ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+      const o = ac.createOscillator(), gn = ac.createGain(), t = ac.currentTime;
+      o.type = 'sine'; o.frequency.value = freq;
+      gn.gain.setValueAtTime(.0001, t); gn.gain.exponentialRampToValueAtTime(vol || .15, t + .01);
+      gn.gain.setValueAtTime(vol || .15, t + Math.max(.01, dur - .05)); gn.gain.exponentialRampToValueAtTime(.0001, t + dur);
+      o.connect(gn).connect(ac.destination); o.start(t); o.stop(t + dur + .02);
+    }catch(e){}
+  }
+
+  /* ============================================================
+     RENDER
+     ============================================================ */
+  const $ = id => document.getElementById(id);
+  const heart = $('heart');
+  let mainMode = MODES.idle;
+  let lastMainKey = null;
+
+  const mainMon = new Monitor($('mainEcg'), () => mainMode, {
+    speed:130, grid:true, glow:true,
+    onBeat: m => {
+      tone(m.key === 'weak' ? 620 : 880, .07, .12);
+      heart.classList.add('beat'); setTimeout(() => heart.classList.remove('beat'), 130);
+    }
+  });
+
+  function fillSelects(){
+    $('industry').innerHTML = Object.entries(INDUSTRIES).map(([k,v]) => `<option value="${k}">${esc(v.label)}</option>`).join('');
+    $('state').innerHTML = Object.entries(STATES).sort((a,b) => a[1][0].localeCompare(b[1][0])).map(([k,v]) => `<option value="${k}">${esc(v[0])}</option>`).join('');
+    $('area').innerHTML = Object.entries(AREAS).map(([k,v]) => `<option value="${k}">${esc(v[0])}</option>`).join('');
+  }
+  function renderSetup(){
+    $('biz').value = S.biz; $('industry').value = S.industry; $('state').value = S.state; $('area').value = S.area;
+    $('multOut').textContent = Math.round(mult()*100) + '%';
+    const ind = INDUSTRIES[S.industry];
+    const missing = ind.services.filter(([n]) => !S.services.some(s => s.name.toLowerCase() === n.toLowerCase())).length;
+    $('starterBtn').textContent = missing ? `Add ${missing} starter ${ind.label.toLowerCase()} service${missing>1?'s':''}` : '';
+    $('starterBtn').hidden = !missing;
+    $('setupSummary').textContent = [S.biz, ind.label, AREAS[S.area][0] + ', ' + S.state].filter(Boolean).join(' · ');
+    $('soundBtn').setAttribute('aria-pressed', S.sound ? 'true' : 'false');
+    $('soundBtn').firstElementChild.textContent = S.sound ? '🔊' : '🔈';
+  }
+
+  function renderMonitor(){
+    const o = overall();
+    mainMode = o.locked ? o.mode : MODES.idle;
+    const mon = $('monitor');
+    mon.classList.toggle('is-flat', mainMode.key === 'flat');
+    $('monLabel').textContent = S.biz ? `${S.biz} · overall pulse` : 'Overall pulse';
+    $('monStatus').textContent = !o.locked ? 'Lock in a price to start monitoring'
+      : { ok:'Healthy — priced with your area', prem:'Premium — above your area', weak:'Weak — running under your area', flat:'Flatline — you charge too low' }[mainMode.key];
+    $('monStatus').style.color = mainMode.color;
+    $('monNum').textContent = o.ratio == null ? '--' : Math.round(o.ratio*100);
+    $('monNum').parentElement.style.color = o.locked ? mainMode.color : 'var(--faint)';
+    $('stOk').textContent = o.counts.ok; $('stPrem').textContent = o.counts.prem; $('stWeak').textContent = o.counts.weak; $('stFlat').textContent = o.counts.flat;
+
+    const af = $('alarmFlat');
+    if(o.flat.length){
+      af.innerHTML = `<b>${o.flat.length} service${o.flat.length>1?'s are':' is'} flatlining:</b> ${o.flat.map(s => esc(s.name)).join(', ')}. You charge more than 20% under your area's average — you're leaving money on the table and signalling “cheap.”`;
+      af.classList.add('on');
+    } else af.classList.remove('on');
+    const am = $('alarmMoney');
+    if(o.gap >= 1){ am.innerHTML = `Pricing at the area average would bring in about <b>${dollars(o.gap)} more a month</b> (${dollars(o.gap*12)} a year) on the services where you've entered how many you do.`; am.classList.add('on'); }
+    else am.classList.remove('on');
+
+    if(lastMainKey !== null && mainMode.key === 'flat' && lastMainKey !== 'flat') tone(880, 1.6, .1);
+    lastMainKey = mainMode.key;
+  }
+
+  function verdict(s, r){
+    if(!s.locked) return s.price == null ? 'Enter what you charge and lock it in to start the heartbeat.' : 'Lock this price in to start the heartbeat.';
+    if(!r.avg) return 'No estimate for this service yet — add a few local prices below to give it an area average.';
+    const pct = Math.round(r.ratio*100), a = dollars(r.avg.v);
+    switch(r.mode.key){
+      case 'flat': return `<b>You charge too low.</b> ${money(s.price)} is ${100-pct}% under the area average of ${a}. Charging at least <b>${money(healthyFloor(r.avg.v))}</b> gets a healthy pulse.`;
+      case 'weak': return `Running a little low — ${100-pct}% under the ${a} area average. <b>${money(healthyFloor(r.avg.v))}</b> or more is healthy.`;
+      case 'prem': return `You're ${pct-100}% above the ${a} area average. Fine if your reviews, results and experience back it up.`;
+      default:     return `Right in the pocket — ${pct}% of the ${a} area average.`;
+    }
+  }
+
+  function renderList(){
+    const list = $('list');
+    const open = new Set([...list.querySelectorAll('details[open]')].map(d => d.closest('.svc').dataset.id));
+    list.querySelectorAll('canvas').forEach(c => c._mon && c._mon.destroy());
+    if(!S.services.length){ list.innerHTML = `<div class="empty">No services yet. Add one below, or pick an industry above to load a starter list.</div>`; return; }
+    list.innerHTML = S.services.map(s => {
+      const r = read(s), m = r.mode;
+      const priceBox = s.locked
+        ? `<div class="box"><div class="k">🔒 You charge</div><div class="v">${money(s.price)}</div>
+             <div class="s">Locked ${fmtDate(s.lockedAt)} · <button class="unlock" data-act="unlock">change</button></div></div>`
+        : `<div class="box"><div class="k">You charge</div>
+             <div class="price-edit"><span class="dollar">$</span><input type="number" inputmode="decimal" min="0" step="1" data-act="price" value="${s.price ?? ''}" placeholder="0" aria-label="Your price for ${esc(s.name)}">
+             <button class="lock-btn" data-act="lock" ${s.price == null ? 'disabled' : ''}>Lock</button></div></div>`;
+      const avgBox = `<div class="box"><div class="k">Area avg</div><div class="v">${r.avg ? dollars(r.avg.v) : '—'}</div><div class="s">${r.avg ? esc(r.avg.src) : 'needs local prices'}</div></div>`;
+      const pctBox = `<div class="box"><div class="k">Pulse</div><div class="v" style="color:${m.color}">${r.ratio == null ? '--' : Math.round(r.ratio*100) + '%'}</div><div class="s">${r.monthlyGap >= 1 ? '−' + dollars(r.monthlyGap) + '/mo' : 'of area avg'}</div></div>`;
+      const chips = s.local.map((l,i) => `<span class="chip"><b>${money(l.p)}</b>${l.label ? ' ' + esc(l.label) : ''}<button data-act="rmlocal" data-i="${i}" aria-label="Remove">×</button></span>`).join('');
+      const hist = s.history.length ? `<div><h3>Price history</h3><div class="history">${s.history.map(h => `${money(h.price)} <span style="color:var(--faint)">${fmtDate(h.date)}</span>`).join(' → ')} → ${s.locked ? money(s.price) + ' now' : 'unlocked'}</div></div>` : '';
+      return `<article class="svc" data-id="${s.id}" style="--c:${m.color}">
+        <div class="svc-main">
+          <div class="svc-row1"><span class="svc-name">${esc(s.name)}</span><span class="svc-badge">${m.label}</span></div>
+          <canvas class="ecg" aria-hidden="true"></canvas>
+          <div class="svc-nums">${priceBox}${avgBox}${pctBox}</div>
+          <div class="verdict ${m.key === 'flat' ? 'flat' : ''}">${verdict(s, r)}</div>
+        </div>
+        <details ${open.has(s.id) ? 'open' : ''}><summary>Local prices${s.local.length ? ` (${s.local.length})` : ''} · volume · remove</summary>
+          <div class="more">
+            <div>
+              <h3>Local prices I've seen</h3>
+              ${chips ? `<div class="chips">${chips}</div>` : ''}
+              <form class="add-local" data-act="addlocal">
+                <input type="number" inputmode="decimal" min="1" step="1" name="p" placeholder="$ price" required aria-label="Competitor price">
+                <input type="text" name="label" placeholder="Who charges it (optional)" aria-label="Competitor name">
+                <button class="btn small" type="submit">Add</button>
+              </form>
+              <p class="hint">Check competitors' booking pages, Google listings and price boards. Each price you add moves the area average toward what's really charged near you.</p>
+            </div>
+            <div class="row-inline">How many do you do a week?
+              <input type="number" inputmode="numeric" min="0" step="1" data-act="perweek" value="${s.perWeek ?? ''}" placeholder="0" aria-label="Per week">
+              <span class="hint" style="margin:0">Used to show what under-pricing costs you each month.</span>
+            </div>
+            ${hist}
+            <div><button class="btn small danger" data-act="remove">Remove service</button></div>
+          </div>
+        </details>
+      </article>`;
+    }).join('');
+    list.querySelectorAll('.svc').forEach(el => {
+      const s = byId(el.dataset.id);
+      new Monitor(el.querySelector('canvas'), () => read(s).mode, { speed:70 });
+    });
+  }
+
+  function renderAll(){ renderSetup(); renderMonitor(); renderList(); save(); }
+  const byId = id => S.services.find(s => s.id === id);
+
+  /* ============================================================
+     EVENTS
+     ============================================================ */
+  fillSelects();
+
+  $('biz').addEventListener('input', e => { S.biz = e.target.value.trim(); renderSetup(); renderMonitor(); save(); });
+  $('industry').addEventListener('change', e => {
+    S.industry = e.target.value;
+    if(!S.services.some(s => s.price != null || s.local.length)) S.services = starter(S.industry);
+    renderAll();
+  });
+  $('state').addEventListener('change', e => { S.state = e.target.value; renderAll(); });
+  $('area').addEventListener('change', e => { S.area = e.target.value; renderAll(); });
+  $('starterBtn').addEventListener('click', () => {
+    INDUSTRIES[S.industry].services.forEach(([n,b]) => { if(!S.services.some(s => s.name.toLowerCase() === n.toLowerCase())) S.services.push(svc(n,b)); });
+    renderAll();
+  });
+  $('soundBtn').addEventListener('click', () => { S.sound = !S.sound; renderSetup(); save(); if(S.sound) tone(880,.07,.12); });
+
+  $('demoBtn').addEventListener('click', () => {
+    const hasWork = S.services.some(s => s.locked || s.local.length);
+    if(hasWork && !confirm('Replace what you have with the demo shop? Download a backup first if you want to keep it.')) return;
+    const B = Object.fromEntries(INDUSTRIES.barber.services);
+    const d = [["Men's Cut",30,14],["Skin Fade",35,8],["Kids Cut",25,4],["Senior Cut",20,5],["Clean Up / Line-Up",10,6],["Beard Trim",15,6],["Eyebrow Wax",10,2],["Nose Hair Wax",10,2],["Ear Hair Wax",10,1],["Express Facial",20,2],["Ladies Cut",55,3],["Add Wash",10,3]];
+    S = { biz:'Demo Barbershop', industry:'barber', state:'TX', area:'small', sound:S.sound,
+          services: d.map(([n,p,w]) => svc(n, B[n], { price:p, locked:true, lockedAt:today(), perWeek:w })) };
+    $('setup').open = false;
+    renderAll();
+  });
+
+  $('addSvc').addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $('newSvc').value.trim(); if(!name) return;
+    const known = Object.values(INDUSTRIES).flatMap(i => i.services).find(([n]) => n.toLowerCase() === name.toLowerCase());
+    S.services.push(svc(name, known ? known[1] : null));
+    $('newSvc').value = ''; renderAll();
+  });
+
+  const list = $('list');
+  list.addEventListener('input', e => {
+    const el = e.target, card = el.closest('.svc'); if(!card) return;
+    const s = byId(card.dataset.id);
+    if(el.dataset.act === 'price'){
+      const v = parseFloat(el.value); s.price = Number.isFinite(v) && v >= 0 ? v : null;
+      card.querySelector('[data-act=lock]').disabled = s.price == null; save();
+    }
+  });
+  list.addEventListener('change', e => {
+    const el = e.target, card = el.closest('.svc'); if(!card) return;
+    const s = byId(card.dataset.id);
+    if(el.dataset.act === 'perweek'){ const v = parseInt(el.value,10); s.perWeek = v > 0 ? v : null; renderMonitor(); renderList(); save(); }
+  });
+  list.addEventListener('keydown', e => {
+    if(e.key === 'Enter' && e.target.dataset.act === 'price'){ e.preventDefault(); const b = e.target.closest('.svc').querySelector('[data-act=lock]'); if(!b.disabled) b.click(); }
+  });
+  list.addEventListener('click', e => {
+    const b = e.target.closest('[data-act]'); if(!b || b.tagName === 'INPUT' || b.tagName === 'FORM') return;
+    const s = byId(b.closest('.svc').dataset.id);
+    switch(b.dataset.act){
+      case 'lock':
+        if(s.price == null) return;
+        s.locked = true; s.lockedAt = today(); break;
+      case 'unlock':
+        s.history.push({ price:s.price, date:s.lockedAt }); s.locked = false; break;
+      case 'rmlocal':
+        s.local.splice(+b.dataset.i, 1); break;
+      case 'remove':
+        if(!confirm(`Remove ${s.name}?`)) return;
+        S.services = S.services.filter(x => x !== s); break;
+      default: return;
+    }
+    renderMonitor(); renderList(); renderSetup(); save();
+    if(b.dataset.act === 'unlock'){ const inp = list.querySelector(`[data-id="${s.id}"] [data-act=price]`); if(inp){ inp.focus(); inp.select(); } }
+  });
+  list.addEventListener('submit', e => {
+    const f = e.target; if(f.dataset.act !== 'addlocal') return;
+    e.preventDefault();
+    const s = byId(f.closest('.svc').dataset.id);
+    const p = parseFloat(f.p.value); if(!(p > 0)) return;
+    s.local.push({ p, label:f.label.value.trim() });
+    renderMonitor(); renderList(); save();
+    const again = list.querySelector(`[data-id="${s.id}"] form [name=p]`); if(again) again.focus();
+  });
+
+  $('exportBtn').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(S, null, 2)], { type:'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `price-pulse-${today()}.json`; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  });
+  $('importBtn').addEventListener('click', () => $('importFile').click());
+  $('importFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; if(!f) return;
+    try{ const s = JSON.parse(await f.text()); if(!Array.isArray(s.services)) throw 0; S = Object.assign(blank(), s); renderAll(); }
+    catch(err){ alert("That file isn't a Price Pulse backup."); }
+    e.target.value = '';
+  });
+  $('resetBtn').addEventListener('click', () => {
+    if(!confirm('Erase everything and start over? This cannot be undone unless you downloaded a backup.')) return;
+    S = blank(); $('setup').open = true; renderAll();
+  });
+
+  $('setup').open = firstRun;
+  renderAll();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
