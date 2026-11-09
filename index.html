@@ -995,10 +995,14 @@
       {name:"Clean Up",        vid:"GCUHVVI6OJJYQUYFGK3T262G", ver:1779492057474, price:10, min:5,  note:"Outline only, no full cut"}
     ],
     groom: [
-      {name:"Beard Trim",       vid:"URSAGCND3ZK6STVRO4K2ASRW", ver:1778116253933, price:15, min:15, note:"Optional straight-razor detailing"},
-      {name:"Eyebrow Wax",      vid:"ANL2FCU2VGS4VQXCP6LRHX2S", ver:1778116277566, price:12, min:10, note:""},
-      {name:"Ear Hair Removal", vid:"JIUUREBGWMH533A3TDK6SF3G", ver:1778116223564, price:12, min:10, note:"Waxing"},
-      {name:"Nose Hair Removal",vid:"ACUUAJALYCPMVKAVKFAESPWH", ver:1778116157895, price:12, min:10, note:"Waxing"}
+      // Square's "Full Beard Detail With Straight Razor" ($20, 30 min). If Square won't book it online,
+      // it books as Beard Line Up (15 min, $15) with a note so Randi adds $5 and allows 30 min.
+      {name:"Full Beard Detail", vid:"ROG3QGIMDX5T4T4FEMJOW4IL", ver:1794200388924, price:20, min:30, note:"With straight razor",
+       fallback:"URSAGCND3ZK6STVRO4K2ASRW", fallbackNote:"FULL BEARD DETAIL w/ straight razor ($20, 30 min): booked as Beard Line Up, add $5 at checkout"},
+      {name:"Beard Line Up",     vid:"URSAGCND3ZK6STVRO4K2ASRW", ver:1794200303353, price:15, min:15, note:""},
+      {name:"Eyebrow Wax",      vid:"ANL2FCU2VGS4VQXCP6LRHX2S", ver:1794199883220, price:12, min:10, note:""},
+      {name:"Ear Hair Removal", vid:"JIUUREBGWMH533A3TDK6SF3G", ver:1794199912709, price:12, min:10, note:"Waxing"},
+      {name:"Nose Hair Removal",vid:"ACUUAJALYCPMVKAVKFAESPWH", ver:1794199897834, price:12, min:10, note:"Waxing"}
     ],
     facial: [
       {name:"Express Facial",   vid:"CXBDI3D3XTKEONDY5FT24SFC", ver:1781196099787, price:20, min:15, note:"A quick refresh"},
@@ -1022,9 +1026,10 @@
      Anything already in the cart is never offered.
      ============================================================ */
   const ADDONS = {
-    "Beard Trim"        : ["Express Facial", "Nose Hair Removal"],
-    "Men's Cut"         : ["Beard Trim", "Express Facial", "Nose Hair Removal"],
-    "Men's Cut + Wash"  : ["Beard Trim", "Express Facial", "Nose Hair Removal"],
+    "Full Beard Detail" : ["Express Facial", "Nose Hair Removal"],
+    "Beard Line Up"     : ["Express Facial", "Nose Hair Removal"],
+    "Men's Cut"         : ["Beard Line Up", "Full Beard Detail", "Express Facial", "Nose Hair Removal"],
+    "Men's Cut + Wash"  : ["Beard Line Up", "Full Beard Detail", "Express Facial", "Nose Hair Removal"],
     "Nose Hair Removal" : ["Ear Hair Removal"],
     "Ear Hair Removal"  : ["Nose Hair Removal"]
   };
