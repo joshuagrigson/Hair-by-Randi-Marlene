@@ -307,6 +307,21 @@
   .cart-bar .link{font-size:.95rem;}
   .cart-bar .btn{padding:.9rem 1.8rem;min-height:48px;}
 
+  /* ---------- "Add a wash?" prompt after Men's Cut ---------- */
+  .wash-scrim{position:fixed;inset:0;z-index:90;background:rgba(4,2,3,.6);opacity:0;transition:opacity .3s ease;}
+  .wash-pop{position:fixed;left:50%;top:50%;z-index:91;width:min(360px,calc(100% - 32px));
+    transform:translate(-50%,-46%) scale(.96);opacity:0;transition:opacity .3s ease, transform .35s cubic-bezier(.16,1,.3,1);
+    text-align:center;padding:1.8rem 1.4rem 1.4rem;border:1px solid rgba(231,201,119,.55);border-radius:18px;
+    background:linear-gradient(180deg,#5a121d,#2a070c);box-shadow:0 30px 80px rgba(0,0,0,.75);}
+  .wash-scrim.show{opacity:1;}
+  .wash-pop.show{opacity:1;transform:translate(-50%,-50%);}
+  .wash-pop[hidden],.wash-scrim[hidden]{display:none;}
+  .wash-pop .wp-t{font-family:var(--display);font-weight:600;color:var(--ivory);font-size:1.35rem;letter-spacing:.04em;}
+  .wash-pop p{color:var(--bone-dim);font-size:1.08rem;margin:.5rem 0 1.2rem;line-height:1.4;}
+  .wash-pop p b{color:var(--gold-bright);font-weight:600;}
+  .wash-pop .wp-btns{display:flex;flex-direction:column;gap:.6rem;}
+  .wash-pop .btn{width:100%;justify-content:center;min-height:48px;}
+
   /* ---------- Visit ---------- */
   .visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-top:3.2rem;}
   .card{position:relative;border:1px solid var(--gold-line);background:linear-gradient(160deg,rgba(74,14,21,.28),rgba(10,7,8,.55));padding:clamp(1.6rem,3.4vw,2.6rem);}
@@ -781,6 +796,16 @@
   </div>
 </div>
 
+<div class="wash-scrim" id="washScrim" hidden></div>
+<div class="wash-pop" id="washPop" role="dialog" aria-modal="true" aria-labelledby="washT" aria-describedby="washD" hidden>
+  <div class="wp-t" id="washT">Add a Wash?</div>
+  <p id="washD">Add a wash to your Men&rsquo;s Cut for <b>$5</b> more.</p>
+  <div class="wp-btns">
+    <button type="button" class="btn" id="washYes">Add Wash &middot; $5</button>
+    <button type="button" class="btn btn-ghost" id="washNo">No Thanks</button>
+  </div>
+</div>
+
 <!-- ============ BOOKING SHEET ============ -->
 <div class="modal" id="modal" aria-hidden="true">
   <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
@@ -1007,6 +1032,17 @@
   const byVid = {}, byName = {}, rowByVid = {};
   function normName(s){ return String(s).replace(/[’']/g, "'").trim().toLowerCase(); }
   Object.values(SERVICES).flat().forEach(s => { byVid[s.vid] = s; byName[normName(s.name)] = s; });
+
+  /* ----- Wash: a $5 add-on to Men's Cut, never a service on its own.
+     Square has no $5 wash item; it has "Men's Cut With A Wash" at $35 ($30 cut + $5 wash).
+     So a washed Men's Cut is booked as that service and Square charges $35.
+     If Square won't take it online (online booking turned off for it), the plain
+     Men's Cut is booked and "add wash" goes in the booking note instead. ----- */
+  const MENS = byName[normName("Men's Cut")];
+  const MENS_WASH = {vid:"DCUL4QHIPO342BZPY5LQOY2C", ver:1794100951015};   // Square: Men's Cut With A Wash, $35, 30 min
+  const WASH = {name:"Add Wash", vid:"WASH", ver:0, price:5, min:0, note:"With your Men’s Cut", addon:true};
+  byVid[WASH.vid] = WASH; byName[normName(WASH.name)] = WASH;
+  let washBookable = true;
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   const MAXQ = 6;
 
@@ -1019,7 +1055,7 @@
      ============================================================ */
   const ADDONS = {
     "Beard Trim"        : ["Express Facial", "Nose Hair Removal"],
-    "Men's Cut"         : ["Beard Trim", "Express Facial", "Nose Hair Removal"],
+    "Men's Cut"         : ["Add Wash", "Beard Trim", "Express Facial", "Nose Hair Removal"],
     "Nose Hair Removal" : ["Ear Hair Removal"],
     "Ear Hair Removal"  : ["Nose Hair Removal"]
   };
@@ -1041,7 +1077,10 @@
   function setQty(s, q){
     if(q > ((cart[s.vid]||{}).qty||0) && navigator.vibrate){ try{ navigator.vibrate(8); }catch(e){} }   // tiny tap on Android
     if(q <= 0) delete cart[s.vid];
-    else cart[s.vid] = {name:s.name, vid:s.vid, ver:s.ver, price:s.price, min:s.min, qty:Math.min(q, MAXQ)};
+    else cart[s.vid] = {name:s.name, vid:s.vid, ver:s.ver, price:s.price, min:s.min, addon:!!s.addon, qty:Math.min(q, MAXQ)};
+    // a wash only rides along with a Men's Cut: never more washes than cuts
+    const w = cart[WASH.vid], mc = cart[MENS.vid];
+    if(w){ if(!mc) delete cart[WASH.vid]; else if(w.qty > mc.qty) w.qty = mc.qty; }
     reflectRow(s.vid); renderCart();
   }
   function reflectRow(vid){
@@ -1070,11 +1109,11 @@
             '<button type="button" class="minus" aria-label="One fewer">&minus;</button><span class="n" aria-live="polite">1</span>' +
             '<button type="button" class="plus" aria-label="One more">+</button></div>' +
         '</div>';
-      row.querySelector('.add').onclick = () => { setQty(s, 1); row.querySelector('.qty .plus').focus({preventScroll:true}); };
+      row.querySelector('.add').onclick = () => { setQty(s, 1); row.querySelector('.qty .plus').focus({preventScroll:true}); askWash(s); };
       row.querySelector('.minus').onclick = () => { const q = (cart[s.vid]||{qty:1}).qty - 1; setQty(s, q); if(q<=0) row.querySelector('.add').focus({preventScroll:true}); };
       row.querySelector('.plus').onclick  = () => setQty(s, (cart[s.vid]||{qty:0}).qty + 1);
       // the whole row is a tap target on a phone — tapping it adds the service once
-      row.addEventListener('click', e => { if(!e.target.closest('button') && !cart[s.vid]) setQty(s, 1); });
+      row.addEventListener('click', e => { if(!e.target.closest('button') && !cart[s.vid]){ setQty(s, 1); askWash(s); } });
       rowByVid[s.vid] = row;
       el.appendChild(row);
     });
@@ -1087,7 +1126,7 @@
   const cartBar = document.getElementById('cartBar');
   function cartTotals(){
     let total=0, appts=0, mins=0;
-    Object.values(cart).forEach(c => { total += c.price*c.qty; appts += c.qty; mins += c.min*c.qty; });
+    Object.values(cart).forEach(c => { total += c.price*c.qty; if(!c.addon) appts += c.qty; mins += c.min*c.qty; });
     return {total, appts, mins};
   }
   function renderCart(){
@@ -1104,6 +1143,27 @@
   }
   document.getElementById('cartClr').onclick = () => { Object.keys(cart).forEach(k => { delete cart[k]; reflectRow(k); }); renderCart(); };
 
+  /* ----- "Add a Wash?" prompt: pops up when Men's Cut goes into the cart ----- */
+  const washPop = document.getElementById('washPop'), washScrim = document.getElementById('washScrim');
+  let washReturn = null;
+  function askWash(s){
+    if(s.vid !== MENS.vid || cart[WASH.vid]) return;
+    washReturn = document.activeElement;
+    washPop.hidden = washScrim.hidden = false;
+    requestAnimationFrame(() => { washPop.classList.add('show'); washScrim.classList.add('show'); });
+    document.getElementById('washYes').focus({preventScroll:true});
+  }
+  function closeWash(){
+    if(washPop.hidden) return;
+    washPop.classList.remove('show'); washScrim.classList.remove('show');
+    setTimeout(() => { washPop.hidden = washScrim.hidden = true; }, 320);
+    if(washReturn && washReturn.focus) washReturn.focus({preventScroll:true});
+  }
+  document.getElementById('washYes').onclick = () => { setQty(WASH, (cart[MENS.vid]||{qty:1}).qty); closeWash(); };
+  document.getElementById('washNo').onclick = closeWash;
+  washScrim.onclick = closeWash;
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && !washPop.hidden) closeWash(); });
+
   /* ----- "Book" links: with services chosen they open booking; otherwise they go to the menu ----- */
   document.querySelectorAll('[data-book]').forEach(a => a.addEventListener('click', e => {
     if(cartTotals().appts){ e.preventDefault(); openModal(); }
@@ -1112,7 +1172,11 @@
   /* ----- expand cart into per-appointment segments ----- */
   function cartSegments(){
     const segs = [];
-    Object.values(cart).forEach(c => { for(let i=0;i<c.qty;i++) segs.push({service_variation_id:c.vid}); });
+    Object.values(cart).forEach(c => {
+      if(c.addon) return;   // the wash is folded into the Men's Cut below
+      const washed = (c.vid === MENS.vid && cart[WASH.vid] && washBookable) ? cart[WASH.vid].qty : 0;
+      for(let i=0;i<c.qty;i++) segs.push({service_variation_id: i < washed ? MENS_WASH.vid : c.vid});
+    });
     return segs;
   }
 
@@ -1210,7 +1274,7 @@
       b.setAttribute('aria-pressed', on);
       b.innerHTML = '<span class="tick">'+(on?TICK:PLUS)+'</span>' +
         '<span class="nm">'+esc(s.name)+(s.note?'<small>'+esc(s.note)+'</small>':'')+'</span>' +
-        '<span class="pr">$'+s.price+'<small>+'+fmtDur(s.min)+'</small></span>';
+        '<span class="pr">$'+s.price+(s.min?'<small>+'+fmtDur(s.min)+'</small>':'')+'</span>';
       b.onclick = () => { setQty(s, on ? 0 : 1); renderExtras(); wrap.children[extrasList.indexOf(s)].focus(); };
       wrap.appendChild(b);
     });
@@ -1241,8 +1305,14 @@
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ start_at:start.toISOString(), end_at:end.toISOString(), segment_filters:cartSegments() })
       });
-      if(!r.ok) throw new Error('HTTP '+r.status);
       const j = await r.json();
+      if(!r.ok){
+        // Square won't book "Men's Cut With A Wash" online: book the plain cut, note the wash
+        if(cart[WASH.vid] && washBookable && /bookable|not found/i.test(JSON.stringify(j.errors||''))){
+          washBookable = false; return ensureMonth(y, m);
+        }
+        throw new Error('HTTP '+r.status);
+      }
       (j.availabilities||[]).forEach(a => {
         const k = dayKey(new Date(a.start_at));
         if(isVacationDay(k)) return;
@@ -1443,7 +1513,7 @@
           start_at: selectedSlot.start_at,
           appointment_segments: selectedSlot.appointment_segments,
           customer: { given_name:first, family_name:last, email:email, phone:phone },
-          note: "Booked via website"
+          note: "Booked via website" + (cart[WASH.vid] && !washBookable ? " · ADD WASH to Men's Cut (+$5)" + (cart[WASH.vid].qty>1 ? " x"+cart[WASH.vid].qty : "") : "")
         })
       });
       const j = await r.json();
