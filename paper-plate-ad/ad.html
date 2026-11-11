@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Paper Plate ad 01: Snap, Share, Stack (9:16, 21s)</title>
+<!--
+  One 1080x1920 stage driven by CSS animations. Open it in a browser and it
+  plays once. render.js seeks it frame by frame to make the MP4 and the stills.
+  Every screen in here is drawn to look like the app; none is a screenshot.
+-->
+<style>
+@font-face{font-family:Playfair;font-weight:400;src:url(assets/PlayfairDisplay-Regular.ttf)}
+@font-face{font-family:Playfair;font-weight:500;src:url(assets/PlayfairDisplay-Medium.ttf)}
+@font-face{font-family:Playfair;font-weight:500;font-style:italic;src:url(assets/PlayfairDisplay-MediumItalic.ttf)}
+@font-face{font-family:Playfair;font-weight:700;src:url(assets/PlayfairDisplay-Bold.ttf)}
+@font-face{font-family:DM;font-weight:400;src:url(assets/DMSans-Regular.ttf)}
+@font-face{font-family:DM;font-weight:500;src:url(assets/DMSans-Medium.ttf)}
+@font-face{font-family:DM;font-weight:700;src:url(assets/DMSans-Bold.ttf)}
+
+:root{
+  --ink:#141310; --card:#1C1A16; --raised:#26231E;
+  --paper:#F2ECE1; --paper2:#FBF8F2; --text:#F4F0E8; --dim:#A39B8E;
+  --olive:#3F5D45; --oliveTop:#4A6C50; --oliveBot:#334B39; --sage:#8FB39A; --pale:#A8C4AE;
+  --gold:#D2A94F; --clay:#D98B5F; --inkText:#211E17; --inkDim:#6E6658;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+#stage{
+  position:relative;width:1080px;height:1920px;overflow:hidden;transform-origin:0 0;
+  font-family:DM,sans-serif;color:var(--text);
+  background:
+    radial-gradient(900px 700px at 8% 4%,rgba(210,169,79,.20),transparent 60%),
+    radial-gradient(800px 900px at 100% 78%,rgba(210,169,79,.10),transparent 62%),
+    radial-gradient(1200px 1200px at 50% 45%,#211e19,var(--ink) 70%);
+}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(closest-side at 50% 48%,transparent 62%,rgba(0,0,0,.5))}
+
+/* every animated thing holds its first frame until its delay, then its last */
+#stage *{animation-fill-mode:both;animation-timing-function:cubic-bezier(.2,.7,.2,1)}
+
+.scene{position:absolute;inset:0;opacity:0;animation:scene var(--len) linear var(--at)}
+@keyframes scene{0%{opacity:0}4%{opacity:1}95%{opacity:1}100%{opacity:0}}
+#hook{--at:0s;--len:3.1s}
+#snap{--at:3s;--len:4.8s}
+#share{--at:7.7s;--len:4.9s}
+#stack{--at:12.5s;--len:5.2s}
+#end{--at:17.6s;--len:3.4s;animation-name:sceneStay}
+@keyframes sceneStay{0%{opacity:0}12%{opacity:1}100%{opacity:1}}
+
+@keyframes up{from{opacity:0;transform:translateY(46px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}70%{opacity:1;transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+.up{animation:up .6s var(--d)}
+.fade{animation:fade .5s var(--d)}
+.pop{animation:pop .45s var(--d)}
+
+/* ---------- shared type ---------- */
+.mark{position:absolute;top:236px;left:0;right:0;text-align:center;
+  font-family:Playfair;font-size:40px;letter-spacing:.14em;color:var(--dim)}
+.eyebrow{position:absolute;top:330px;left:0;right:0;text-align:center;
+  font-weight:700;font-size:34px;letter-spacing:.3em;color:var(--sage)}
+.eyebrow b{color:var(--gold);font-weight:700}
+h1{position:absolute;top:392px;left:0;right:0;text-align:center;
+  font-family:Playfair;font-weight:500;font-size:124px;line-height:1.02;letter-spacing:-.015em}
+h1 i{font-weight:500;color:var(--pale)}
+.sub{position:absolute;top:1424px;left:110px;right:110px;text-align:center;
+  font-size:47px;line-height:1.3;color:#DCD5C9}
+.sub b{color:var(--text);font-weight:700}
+
+.phone{position:absolute;left:170px;top:572px;width:740px;height:800px;border-radius:56px;
+  background:var(--card);overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.08),0 0 0 2px rgba(255,255,255,.06)}
+
+/* ---------- 0 hook ---------- */
+#hook .lines{position:absolute;left:96px;right:96px;top:560px;
+  font-family:Playfair;font-weight:500;font-size:150px;line-height:1.08;letter-spacing:-.02em}
+#hook .lines div{white-space:nowrap}
+#hook .lines i{color:var(--gold)}
+#hook .rule{width:150px;height:5px;background:var(--gold);margin:54px 0 48px;border-radius:3px;
+  transform-origin:0 50%;animation:grow .6s 1.75s}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+#hook .tag{font-family:DM;font-size:46px;color:var(--dim);letter-spacing:0;line-height:1.3}
+
+/* ---------- 1 snap ---------- */
+.fridge{position:absolute;inset:0;background:linear-gradient(#eef0ee,#dfe3e0)}
+.shelf{position:absolute;left:0;right:0;height:14px;background:linear-gradient(#c9d0cc,#aab3ae);
+  box-shadow:0 10px 18px rgba(0,0,0,.12)}
+.food{position:absolute;width:176px;height:176px;object-fit:contain}
+.bracket{position:absolute;width:74px;height:74px;border:6px solid rgba(255,255,255,.95);
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.bracket.tl{left:44px;top:44px;border-right:0;border-bottom:0;border-radius:18px 0 0 0}
+.bracket.tr{right:44px;top:44px;border-left:0;border-bottom:0;border-radius:0 18px 0 0}
+.bracket.bl{left:44px;bottom:150px;border-right:0;border-top:0;border-radius:0 0 0 18px}
+.bracket.br{right:44px;bottom:150px;border-left:0;border-top:0;border-radius:0 0 18px 0}
+.count{position:absolute;top:40px;left:50%;transform:translateX(-50%);
+  background:rgba(20,19,16,.78);border-radius:99px;padding:12px 30px;font-weight:700;font-size:30px;
+  height:62px;width:190px;text-align:center;overflow:hidden}
+.count span{position:absolute;left:0;right:0;top:12px;opacity:0}
+.count .c1{animation:show1 4.8s linear 3s}
+.count .c2{animation:show2 4.8s linear 3s}
+.count .c3{animation:show3 4.8s linear 3s}
+@keyframes show1{0%,18%{opacity:1}19%,100%{opacity:0}}
+@keyframes show2{0%,18%{opacity:0}19%,32%{opacity:1}33%,100%{opacity:0}}
+@keyframes show3{0%,32%{opacity:0}33%,100%{opacity:1}}
+.shutter{position:absolute;left:50%;bottom:34px;width:96px;height:96px;margin-left:-48px;border-radius:50%;
+  background:#fff;box-shadow:0 0 0 7px rgba(20,19,16,.55),0 0 0 12px rgba(255,255,255,.9);
+  animation:press 4.8s linear 3s}
+@keyframes press{0%,15%{transform:scale(1)}18%{transform:scale(.84)}21%,29%{transform:scale(1)}32%{transform:scale(.84)}35%,100%{transform:scale(1)}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;animation:flash 4.8s linear 3s}
+@keyframes flash{0%,17%{opacity:0}18.5%{opacity:.92}24%{opacity:0}31%{opacity:0}32.5%{opacity:.92}38%,100%{opacity:0}}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:520px;background:var(--paper);color:var(--inkText);
+  border-radius:44px 44px 0 0;padding:44px 44px 0;box-shadow:0 -20px 50px rgba(0,0,0,.35);
+  animation:sheetUp .6s 5.2s}
+@keyframes sheetUp{from{transform:translateY(105%)}to{transform:none}}
+.sheet h3{font-family:Playfair;font-weight:500;font-size:54px}
+.sheet p{font-size:28px;color:var(--inkDim);margin:6px 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:14px}
+.chip{display:flex;align-items:center;gap:10px;background:#fff;border-radius:99px;padding:10px 24px 10px 10px;
+  font-weight:500;font-size:30px;box-shadow:0 4px 10px rgba(60,50,30,.12),inset 0 0 0 1.5px rgba(0,0,0,.06)}
+.chip img{width:52px;height:52px;object-fit:contain}
+
+/* ---------- 2 share ---------- */
+.reel{position:absolute;inset:0;background:
+  radial-gradient(520px 420px at 50% 40%,#5b4630,#2b2118 70%,#17120d)}
+.reel .dish{position:absolute;left:50%;top:150px;width:360px;height:360px;margin-left:-180px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%,#fffdf7,#e9e0cf);display:grid;place-items:center;
+  box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.reel .dish img{width:230px;height:230px;object-fit:contain}
+.reel .cap{position:absolute;left:40px;right:150px;bottom:150px;font-size:30px;line-height:1.35;
+  text-shadow:0 2px 10px rgba(0,0,0,.7)}
+.reel .cap b{display:block;font-size:32px;margin-bottom:6px}
+.reel .cap span{color:#d9d2c5}
+.side{position:absolute;right:44px;bottom:370px;display:grid;gap:30px}
+.side i{display:block;width:66px;height:66px;border-radius:50%;background:rgba(255,255,255,.16);
+  border:3px solid rgba(255,255,255,.75)}
+.side i.go{background:var(--gold);border-color:#fff;animation:pulse 1s .0s 2 ease-in-out;animation-delay:8.3s}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
+.side i.go::after{content:"";display:block;width:26px;height:26px;margin:17px 0 0 19px;
+  clip-path:polygon(0 45%,60% 45%,60% 15%,100% 55%,60% 95%,60% 65%,0 65%);background:#1a1712}
+.sharesheet{position:absolute;left:0;right:0;bottom:0;height:330px;background:#2a2723;border-radius:40px 40px 0 0;
+  padding:36px 40px;animation:sheetCycle 4.9s linear 7.7s}
+@keyframes sheetCycle{0%,22%{transform:translateY(105%)}30%,56%{transform:none}64%,100%{transform:translateY(105%)}}
+.sharesheet small{display:block;font-size:26px;color:var(--dim);margin-bottom:22px;letter-spacing:.02em}
+.apps{display:flex;gap:34px}
+.app{width:128px;text-align:center;font-size:23px;color:var(--dim)}
+.app i{display:block;width:128px;height:128px;border-radius:30px;background:#3a3631;margin-bottom:12px}
+.app.pp{color:var(--text);font-weight:700}
+.app.pp i{background:url(assets/icon.png) center/cover;box-shadow:0 0 0 0 rgba(210,169,79,.9);
+  animation:tap 4.9s linear 7.7s}
+@keyframes tap{0%,40%{transform:scale(1);box-shadow:0 0 0 0 rgba(210,169,79,0)}
+  46%{transform:scale(.88);box-shadow:0 0 0 0 rgba(210,169,79,.9)}
+  54%{transform:scale(1);box-shadow:0 0 0 34px rgba(210,169,79,0)}100%{transform:scale(1)}}
+.recipe{position:absolute;left:26px;right:26px;top:70px;background:var(--paper2);color:var(--inkText);border-radius:40px;
+  padding:0 0 34px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.6);animation:land .7s 10.9s}
+@keyframes land{from{opacity:0;transform:translateY(90px) scale(.92)}to{opacity:1;transform:none}}
+.recipe .ph{height:210px;background:radial-gradient(360px 260px at 50% 55%,#6b5238,#2b2118);display:grid;place-items:center}
+.recipe .ph div{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffdf7,#e9e0cf);display:grid;place-items:center}
+.recipe .ph img{width:112px;height:112px;object-fit:contain}
+.recipe .in{padding:28px 38px 0}
+.recipe .eb{font-weight:700;font-size:22px;letter-spacing:.2em;color:#4E7259}
+.recipe h3{font-family:Playfair;font-weight:500;font-size:54px;line-height:1.1;margin:8px 0 10px}
+.recipe .meta{font-size:28px;color:var(--inkDim)}
+.recipe .row{display:flex;gap:14px;align-items:center;margin-top:22px;font-size:29px}
+.recipe .n{flex:none;width:44px;height:44px;border-radius:50%;background:#3C5842;color:#F1F7F2;font-weight:700;font-size:24px;display:grid;place-items:center}
+.saved{margin:26px 38px 0;background:linear-gradient(var(--oliveTop),var(--oliveBot));color:#F1F7F2;border-radius:99px;
+  text-align:center;padding:18px;font-weight:700;font-size:30px}
+
+/* ---------- 3 stack ---------- */
+#stack .phone{background:var(--paper);color:var(--inkText);padding:40px 44px}
+.dishes{display:grid;gap:14px}
+.dishrow{display:flex;align-items:center;gap:20px;background:#fff;border-radius:26px;padding:12px 26px 12px 12px;
+  box-shadow:0 6px 14px rgba(60,50,30,.12),inset 0 0 0 1.5px rgba(0,0,0,.05);font-size:32px;font-weight:500}
+.dishrow img{width:70px;height:70px;object-fit:contain}
+.dishrow span{margin-left:auto;font-size:27px;color:var(--inkDim);font-weight:400}
+.plan{position:absolute;left:44px;right:44px;top:370px}
+.plan .head{display:flex;justify-content:space-between;align-items:baseline}
+.plan .head h3{font-family:Playfair;font-weight:500;font-size:50px}
+.plan .head em{font-style:normal;font-weight:700;font-size:28px;color:#4E7259}
+.track{position:relative;height:262px;margin-top:22px}
+.lane{position:absolute;left:0;right:0;height:66px}
+.lane label{position:absolute;left:0;top:-2px;font-size:23px;color:var(--inkDim);font-weight:500;white-space:nowrap}
+.bar{position:absolute;top:30px;height:34px;border-radius:17px;transform-origin:0 50%;
+  background:linear-gradient(var(--oliveTop),var(--oliveBot));animation:fill linear both}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* 50 min of track = 560px. Each bar starts when its dish starts and all three end together. */
+.l1{top:0}    .l1 label{left:0}      .l1 .bar{left:0;width:560px;animation-duration:2s;animation-delay:13.9s}
+.l2{top:88px} .l2 label{left:168px}  .l2 .bar{left:168px;width:392px;animation-duration:1.4s;animation-delay:14.5s;background:linear-gradient(#b7903c,#8f6d27)}
+.l3{top:176px}.l3 label{left:330px}  .l3 .bar{left:426px;width:134px;animation-duration:.48s;animation-delay:15.42s;background:linear-gradient(#c97d55,#9a5a39)}
+.serve{position:absolute;left:560px;top:-8px;bottom:-6px;width:5px;border-radius:3px;background:#211E17}
+.serve::after{content:"";position:absolute;left:-14px;top:-14px;width:33px;height:33px;border-radius:50%;
+  background:var(--gold);opacity:0;animation:ding .9s 15.9s}
+@keyframes ding{0%{opacity:0;transform:scale(.3)}40%{opacity:1;transform:scale(1.5)}100%{opacity:1;transform:scale(1)}}
+.servelab{position:absolute;left:0;top:262px;font-weight:700;font-size:34px;color:#211E17}
+.servelab small{display:block;font-weight:400;font-size:25px;color:var(--inkDim)}
+
+/* ---------- 4 end ---------- */
+#end .icon{position:absolute;left:50%;top:420px;width:400px;height:400px;margin-left:-200px;border-radius:92px;
+  background:url(assets/icon.png) center/cover;box-shadow:0 40px 90px rgba(0,0,0,.6),0 0 0 2px rgba(255,255,255,.08)}
+#end .line{position:absolute;left:0;right:0;top:888px;text-align:center;font-family:Playfair;font-weight:500;
+  font-size:108px;line-height:1.1;letter-spacing:-.015em}
+#end .line i{color:var(--gold)}
+#end .three{position:absolute;left:0;right:0;top:1150px;text-align:center;font-weight:700;font-size:36px;
+  letter-spacing:.26em;color:var(--sage)}
+#end .three b{color:var(--gold);padding:0 14px}
+#end .cta{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;top:1262px;white-space:nowrap;
+  background:linear-gradient(var(--oliveTop),var(--oliveBot));color:#F1F7F2;border-radius:99px;
+  padding:34px 66px;font-weight:700;font-size:46px;box-shadow:0 18px 40px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.16)}
+#end .fine{position:absolute;left:0;right:0;top:1420px;text-align:center;font-size:34px;color:var(--dim)}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- 0 · HOOK -->
+  <section class="scene" id="hook">
+    <div class="lines">
+      <div class="up" style="--d:.15s">Your fridge.</div>
+      <div class="up" style="--d:.7s">Your feed.</div>
+      <div class="up" style="--d:1.25s">One dinner,</div>
+      <div class="up" style="--d:1.25s"><i>timed.</i></div>
+      <div class="rule"></div>
+      <div class="tag fade" style="--d:1.9s">Paper Plate turns what you have<br>and what you saved into tonight.</div>
+    </div>
+  </section>
+
+  <!-- 1 · SNAP -->
+  <section class="scene" id="snap">
+    <div class="mark">paper plate</div>
+    <div class="eyebrow"><b>01</b> &nbsp;SNAP</div>
+    <h1>Snap the <i>fridge.</i></h1>
+    <div class="phone">
+      <div class="fridge">
+        <div class="shelf" style="top:232px"></div>
+        <div class="shelf" style="top:452px"></div>
+        <img class="food" src="assets/chicken.png"  style="left:54px;top:62px">
+        <img class="food" src="assets/lemon.png"    style="left:286px;top:66px;width:150px">
+        <img class="food" src="assets/egg.png"      style="left:500px;top:74px;width:140px;height:160px">
+        <img class="food" src="assets/potato.png"   style="left:40px;top:280px">
+        <img class="food" src="assets/garlic.png"   style="left:272px;top:292px;width:150px;height:160px">
+        <img class="food" src="assets/broccoli.png" style="left:486px;top:282px">
+      </div>
+      <i class="bracket tl"></i><i class="bracket tr"></i><i class="bracket bl"></i><i class="bracket br"></i>
+      <div class="count"><span class="c1">1 of 6</span><span class="c2">2 of 6</span><span class="c3">Done (2)</span></div>
+      <div class="shutter"></div>
+      <div class="flash"></div>
+      <div class="sheet">
+        <h3>We found these</h3>
+        <p>Tap to drop anything that isn&rsquo;t there.</p>
+        <div class="chips">
+          <div class="chip pop" style="--d:5.65s"><img src="assets/chicken.png">Chicken</div>
+          <div class="chip pop" style="--d:5.8s"><img src="assets/lemon.png">Lemon</div>
+          <div class="chip pop" style="--d:5.95s"><img src="assets/potato.png">Potatoes</div>
+          <div class="chip pop" style="--d:6.1s"><img src="assets/garlic.png">Garlic</div>
+          <div class="chip pop" style="--d:6.25s"><img src="assets/broccoli.png">Broccoli</div>
+          <div class="chip pop" style="--d:6.4s"><img src="assets/egg.png">Eggs</div>
+        </div>
+      </div>
+    </div>
+    <p class="sub up" style="--d:3.5s">Up to six photos. It sees what you have<br>and <b>writes the recipe around it.</b></p>
+  </section>
+
+  <!-- 2 · SHARE -->
+  <section class="scene" id="share">
+    <div class="mark">paper plate</div>
+    <div class="eyebrow"><b>02</b> &nbsp;SHARE</div>
+    <h1>Share the <i>reel.</i></h1>
+    <div class="phone">
+      <div class="reel">
+        <div class="dish"><img src="assets/pasta.png"></div>
+        <div class="cap"><b>weeknight pasta</b>creamy garlic penne, 25 min<br><span>recipe in the caption&hellip;</span></div>
+        <div class="side"><i></i><i></i><i class="go"></i></div>
+      </div>
+      <div class="sharesheet">
+        <small>Share to</small>
+        <div class="apps">
+          <div class="app"><i></i>Messages</div>
+          <div class="app pp"><i></i>Paper Plate</div>
+          <div class="app"><i></i>Notes</div>
+          <div class="app"><i></i>Copy</div>
+        </div>
+      </div>
+      <div class="recipe">
+        <div class="ph"><div><img src="assets/pasta.png"></div></div>
+        <div class="in">
+          <div class="eb">FROM A SHARED POST</div>
+          <h3>Creamy Garlic Penne</h3>
+          <div class="meta">25 min &middot; serves 4 &middot; timed steps</div>
+          <div class="row"><div class="n">1</div>Boil the penne, 11 min</div>
+          <div class="row"><div class="n">2</div>Soften the garlic in butter</div>
+        </div>
+        <div class="saved">&#10003;&nbsp; In your Recipe Book</div>
+      </div>
+    </div>
+    <p class="sub up" style="--d:8.2s">Instagram, TikTok or Facebook.<br><b>It becomes a recipe you can cook.</b></p>
+  </section>
+
+  <!-- 3 · STACK -->
+  <section class="scene" id="stack">
+    <div class="mark">paper plate</div>
+    <div class="eyebrow"><b>03</b> &nbsp;STACK</div>
+    <h1>Stack the <i>dishes.</i></h1>
+    <div class="phone">
+      <div class="dishes">
+        <div class="dishrow up" style="--d:12.8s"><img src="assets/chicken.png">Lemon roast chicken<span>50 min</span></div>
+        <div class="dishrow up" style="--d:13.05s"><img src="assets/potato.png">Garlic potatoes<span>35 min</span></div>
+        <div class="dishrow up" style="--d:13.3s"><img src="assets/broccoli.png">Charred broccoli<span>12 min</span></div>
+      </div>
+      <div class="plan fade" style="--d:13.6s">
+        <div class="head"><h3>The plan</h3><em>Eat at 6:30</em></div>
+        <div class="track">
+          <div class="lane l1"><label>5:40 &middot; chicken in</label><div class="bar"></div></div>
+          <div class="lane l2"><label>5:55 &middot; potatoes in</label><div class="bar"></div></div>
+          <div class="lane l3"><label>6:18 &middot; broccoli on</label><div class="bar"></div></div>
+          <div class="serve"></div>
+        </div>
+        <div class="servelab fade" style="--d:15.9s">Serve 6:30<small>all three, hot</small></div>
+      </div>
+    </div>
+    <p class="sub up" style="--d:13s">Up to four recipes become one plan.<br><b>Everything is ready at once.</b></p>
+  </section>
+
+  <!-- 4 · END -->
+  <section class="scene" id="end">
+    <div class="icon pop" style="--d:17.8s"></div>
+    <div class="line up" style="--d:18.1s">Forage your <i>kitchen.</i></div>
+    <div class="three fade" style="--d:18.5s">SNAP<b>&middot;</b>SHARE<b>&middot;</b>STACK</div>
+    <div class="cta up" style="--d:18.8s">Join the waitlist</div>
+    <div class="fine fade" style="--d:19.2s">Coming to iPhone</div>
+  </section>
+</div>
+
+<script>
+// Fit the 1080x1920 stage to whatever window it's opened in.
+(function(){
+  if (location.hash === '#raw') return;           // render.js wants it unscaled
+  var s = document.getElementById('stage');
+  function fit(){ var k = Math.min(innerWidth/1080, innerHeight/1920); s.style.transform = 'scale('+k+')'; }
+  addEventListener('resize', fit); fit();
+})();
+</script>
+</body>
+</html>
