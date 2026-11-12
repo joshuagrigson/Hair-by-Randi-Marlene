@@ -49,7 +49,7 @@ html,body{background:#000;overflow:hidden}
   75%{transform:scale(1.9);box-shadow:0 0 0 60px rgba(210,169,79,0)}100%{transform:scale(1.9)}}
 .grid span{grid-column:2;text-align:center;font-size:21px;margin-top:-32px;font-weight:500}
 .reel{position:absolute;inset:0;background:radial-gradient(460px 420px at 50% 36%,#5b4630,#2b2118 70%,#17120d)}
-.reel .dish{position:absolute;left:50%;top:230px;width:330px;height:330px;margin-left:-165px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffdf7,#e9e0cf);display:grid;place-items:center;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.reel .dish{position:absolute;left:50%;top:260px;width:330px;height:330px;margin-left:-165px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffdf7,#e9e0cf);display:grid;place-items:center;box-shadow:0 30px 60px rgba(0,0,0,.5)}
 .reel .dish img{width:210px}
 .reel .live{position:absolute;left:36px;top:70px;background:#c0392b;border-radius:10px;padding:6px 16px;font-weight:700;font-size:24px;letter-spacing:.06em}
 .reel .who{position:absolute;left:36px;right:130px;bottom:400px;font-size:27px;line-height:1.35;text-shadow:0 2px 10px rgba(0,0,0,.7)}
@@ -96,6 +96,29 @@ html,body{background:#000;overflow:hidden}
 .z{position:absolute;inset:0;transform-origin:var(--o);transform:scale(var(--k))}
 .hand{position:absolute;inset:-2%;animation:hand 5.3s ease-in-out infinite alternate}
 @keyframes hand{0%{transform:translate(0,0) rotate(0)}22%{transform:translate(5px,-4px) rotate(.12deg)}47%{transform:translate(-4px,3px) rotate(-.1deg)}71%{transform:translate(3px,5px) rotate(.08deg)}100%{transform:translate(-5px,-2px) rotate(-.06deg)}}
+
+/* phone as an object (Leonardo: construction, light with a job, deliberate camera) */
+.phone{position:absolute;left:222px;top:300px;width:636px;height:1344px;border-radius:104px;border:0;padding:9px;overflow:visible;
+  background:linear-gradient(118deg,#d9dbdf 0%,#6d6f74 18%,#2c2d30 46%,#8e9095 78%,#e6e7ea 100%);
+  box-shadow:0 60px 90px rgba(40,30,15,.38),0 18px 26px rgba(40,30,15,.28),inset 0 0 3px rgba(255,255,255,.7);
+  transform:perspective(2600px) rotateY(-8deg) rotateX(4deg) rotateZ(-1.6deg);filter:blur(.35px)}
+.phone .scr{position:absolute;inset:9px;border-radius:96px;background:#050505;overflow:hidden}
+.phone .scr .view{position:absolute;inset:15px;border-radius:82px;overflow:hidden;background:#F2ECE1}
+.phone .island{position:absolute;left:50%;top:34px;width:176px;height:50px;margin-left:-88px;border-radius:30px;background:#050505;z-index:8}
+.phone .glare{position:absolute;inset:9px;border-radius:96px;pointer-events:none;z-index:9;
+  background:radial-gradient(520px 260px at 24% -4%,rgba(255,236,200,.26),transparent 70%),linear-gradient(112deg,rgba(255,255,255,.13) 0%,rgba(255,255,255,.03) 24%,transparent 40%,transparent 82%,rgba(210,225,255,.10) 100%)}
+.appshot{position:absolute;left:0;top:0;width:100%;display:block}
+.status{position:absolute;left:0;right:0;top:0;height:74px;background:#F2ECE1;z-index:3;font:600 27px DM,sans-serif;color:#211E17}
+.status b{position:absolute;left:52px;top:26px;font-weight:700}
+.status i{position:absolute;right:50px;top:30px;width:44px;height:22px;border-radius:7px;border:2.5px solid #211E17;opacity:.8}
+.status i::after{content:"";position:absolute;left:3px;top:3px;bottom:3px;width:26px;border-radius:3px;background:#211E17}
+.tapdot{position:absolute;width:120px;height:120px;border-radius:50%;margin:-60px 0 0 -60px;background:rgba(33,30,23,.22);border:3px solid rgba(255,255,255,.7);opacity:0;animation:tapdot .7s var(--d) ease-out}
+@keyframes tapdot{0%{opacity:0;transform:scale(1.5)}30%{opacity:1;transform:scale(.8)}100%{opacity:0;transform:scale(1.25)}}
+.grain{position:absolute;inset:-100px;pointer-events:none;z-index:20;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  0 0 0 1 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+  animation:grainmove .4s steps(4) infinite}
+@keyframes grainmove{0%{transform:translate(0,0)}25%{transform:translate(-37px,23px)}50%{transform:translate(19px,-41px)}75%{transform:translate(-11px,-17px)}100%{transform:translate(29px,31px)}}
+.fadein{animation:fade .35s var(--d)}
 </style></head>
 <body><div id="stage">
 
@@ -106,9 +129,8 @@ html,body{background:#000;overflow:hidden}
 
   <section class="shot" style="--at:3.4s;--len:1.9s">
     <div class="dim" style="background-image:url(gen/h1.jpg)"></div>
-    <div class="phone"><div class="home"><div class="grid">
-      <i></i><i></i><i></i><i></i><i></i><i class="pp"></i><i></i><i></i><span>Paper Plate</span><i style="grid-column:1"></i><i></i><i></i><i></i>
-    </div></div></div>
+    <div class="phone"><div class="scr"><div class="view"><div class="status"><b>5:40</b><i></i></div><img class="appshot" src="app/app-create.png" style="top:62px"><div class="tapdot" style="left:50%;top:499px;--d:4.35s"></div></div><div class="island"></div></div><div class="glare"></div></div>
+    <div class="grain"></div>
   </section>
 
   <section class="shot" style="--at:5.2s;--len:2.4s">
@@ -143,17 +165,15 @@ html,body{background:#000;overflow:hidden}
 
   <section class="shot" style="--at:21.8s;--len:4.7s">
     <div class="dim" style="background-image:url(gen/cx.jpg)"></div>
-    <div class="phone">
+    <div class="phone"><div class="scr"><div class="view" style="background:#17120d">
       <div class="reel"><span class="live">LIVE</span><div class="dish"><img src="../assets/pasta.png"></div>
-        <div class="who"><b>cooking stream</b>creamy garlic penne, start to finish</div>
+        <div class="who"><b>cooking stream</b>weeknight penne pomodoro, start to finish</div>
         <div class="side"><i></i><i></i><i class="go"></i></div></div>
       <div class="sheet"><small>Share to</small><div class="apps">
         <div class="app"><i></i>Messages</div><div class="app pp"><i></i>Paper Plate</div><div class="app"><i></i>Notes</div><div class="app"><i></i>Copy</div></div></div>
-      <div class="recipe"><div class="ph"><div><img src="../assets/pasta.png"></div></div>
-        <div class="in"><div class="eb">FROM A SHARED POST</div><h3>Creamy Garlic Penne</h3><div class="meta">25 min &middot; serves 4 &middot; timed steps</div>
-          <div class="row"><div class="n">1</div>Boil the penne, 11 min</div><div class="row"><div class="n">2</div>Soften the garlic in butter</div></div>
-        <div class="saved">&#10003;&nbsp; In your Recipe Book</div></div>
-    </div>
+      <div class="fadein" style="--d:24.7s;position:absolute;inset:0;background:#F2ECE1;overflow:hidden"><img class="appshot" src="app/app-recipe.png"></div>
+    </div><div class="island"></div></div><div class="glare"></div></div>
+    <div class="grain"></div>
   </section>
 
   <section class="shot" style="--at:26.4s;--len:3.8s">
