@@ -1,0 +1,128 @@
+{
+ "h1": {
+  "model": "google/nano-banana-2.1",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-1428-72e3-ab58-a14864a9c296/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-1428-72e3-ab58-a14864a9c296",
+  "file": "gen/h1.jpg"
+ },
+ "h2": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-e619-7ee1-82f7-33794307d577/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-e619-7ee1-82f7-33794307d577",
+  "file": "gen/h2.jpg"
+ },
+ "h3": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-e871-7652-b577-2b4cdfbfee7a/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-e871-7652-b577-2b4cdfbfee7a",
+  "file": "gen/h3.jpg"
+ },
+ "p1": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-eb07-7820-bc34-ba8da09795b4/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-eb07-7820-bc34-ba8da09795b4",
+  "file": "gen/p1.jpg"
+ },
+ "c1": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-ed81-7e81-a935-c081cf1c2f57/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf22-ed81-7e81-a935-c081cf1c2f57",
+  "file": "gen/c1.jpg"
+ },
+ "p1f": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf23-cc58-7623-a666-2ae63ad3274b/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf23-cc58-7623-a666-2ae63ad3274b",
+  "file": "gen/p1f.jpg"
+ },
+ "h2c": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf23-cf35-7c80-b4d0-8488ef196d45/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf23-cf35-7c80-b4d0-8488ef196d45",
+  "file": "gen/h2c.jpg"
+ },
+ "c1c": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf23-d13f-7a01-9eae-954cf126ead2/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf23-d13f-7a01-9eae-954cf126ead2",
+  "file": "gen/c1c.jpg"
+ },
+ "pA": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8864-7fa1-96e5-6b33ebc393a1/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8864-7fa1-96e5-6b33ebc393a1",
+  "file": "gen/pA.jpg"
+ },
+ "h5": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8aa8-7e30-b619-3b83b0fbacd4/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8aa8-7e30-b619-3b83b0fbacd4",
+  "file": "gen/h5.jpg"
+ },
+ "h6": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8cd3-75a2-847d-0725f9de3e15/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8cd3-75a2-847d-0725f9de3e15",
+  "file": "gen/h6.jpg"
+ },
+ "c2": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8ee1-73a0-a6df-2b68e0f45cfb/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf24-8ee1-73a0-a6df-2b68e0f45cfb",
+  "file": "gen/c2.jpg"
+ },
+ "pB": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf25-2a82-7a83-b9a7-90a81e20ad1a/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf25-2a82-7a83-b9a7-90a81e20ad1a",
+  "file": "gen/pB.jpg"
+ },
+ "v1": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d0cc-7331-8859-42d63e71b528/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d0cc-7331-8859-42d63e71b528",
+  "file": "gen/v1.mp4"
+ },
+ "v2": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d2b4-78d2-8e8f-f4eef20bc9bd/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d2b4-78d2-8e8f-f4eef20bc9bd",
+  "file": "gen/v2.mp4"
+ },
+ "v3": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d51f-7383-b399-6184ea400b41/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d51f-7383-b399-6184ea400b41",
+  "file": "gen/v3.mp4"
+ },
+ "v4": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d774-7f72-843d-bc0f65478e03/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-d774-7f72-843d-bc0f65478e03",
+  "file": "gen/v4.mp4"
+ },
+ "v5": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-da0e-7c90-bd32-c0680566b98d/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-da0e-7c90-bd32-c0680566b98d",
+  "file": "gen/v5.mp4"
+ },
+ "v6": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-dc48-7a51-aa81-7c8ec494735b/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-dc48-7a51-aa81-7c8ec494735b",
+  "file": "gen/v6.mp4"
+ },
+ "v7": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-de10-7d51-a6d9-be1f3306fd28/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-de10-7d51-a6d9-be1f3306fd28",
+  "file": "gen/v7.mp4"
+ },
+ "v8": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-e08d-7952-b801-84e6209b8805/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-e08d-7952-b801-84e6209b8805",
+  "file": "gen/v8.mp4"
+ }
+}
