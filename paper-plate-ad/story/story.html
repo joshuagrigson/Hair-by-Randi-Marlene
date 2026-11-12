@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>Paper Plate ad 02: "What am I going to make for dinner?" (storyboard cut)</title>
+<!-- Stills with camera moves, not video. render.js seeks it frame by frame. Phone screens are drawn, not screenshots. -->
+<style>
+@font-face{font-family:Playfair;font-weight:500;src:url(../assets/PlayfairDisplay-Medium.ttf)}
+@font-face{font-family:Playfair;font-weight:500;font-style:italic;src:url(../assets/PlayfairDisplay-MediumItalic.ttf)}
+@font-face{font-family:DM;font-weight:400;src:url(../assets/DMSans-Regular.ttf)}
+@font-face{font-family:DM;font-weight:500;src:url(../assets/DMSans-Medium.ttf)}
+@font-face{font-family:DM;font-weight:700;src:url(../assets/DMSans-Bold.ttf)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#141310;font-family:DM,sans-serif;color:#F4F0E8;transform-origin:0 0}
+#stage *{animation-fill-mode:both;animation-timing-function:linear}
+.shot{position:absolute;inset:0;opacity:0;animation:shot var(--len) var(--at)}
+@keyframes shot{0%{opacity:0}5%{opacity:1}94%{opacity:1}100%{opacity:0}}
+.pic{position:absolute;inset:0;background-size:cover;background-position:center;animation:var(--move) var(--len) var(--at)}
+@keyframes pushin{from{transform:scale(1.02)}to{transform:scale(1.16)}}
+@keyframes pullout{from{transform:scale(1.18)}to{transform:scale(1.04)}}
+@keyframes drift{from{transform:scale(1.14) translateX(-28px)}to{transform:scale(1.14) translateX(28px)}}
+.shade{position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.72))}
+.cap{position:absolute;left:80px;right:80px;top:1290px;text-align:center;font-family:Playfair;font-weight:500;font-size:84px;line-height:1.12;
+  text-shadow:0 4px 30px rgba(0,0,0,.8);animation:up .5s cubic-bezier(.2,.7,.2,1) var(--d)}
+.cap i{color:#D2A94F}
+.cap.small{font-family:DM;font-weight:500;font-size:50px;top:1380px}
+@keyframes up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;animation:flash .5s var(--d)}
+@keyframes flash{0%{opacity:0}20%{opacity:.95}100%{opacity:0}}
+
+/* pantry: the top shelf turns into the plate */
+.pantry{position:absolute;inset:0;transform-origin:50% 14%;animation:pz 3.6s 7.4s cubic-bezier(.3,0,.2,1)}
+@keyframes pz{0%{transform:scale(1.25)}100%{transform:scale(1.9)}}
+.pantry div{position:absolute;inset:0;background-size:cover}
+.pantry .b{opacity:0;animation:fade 1.1s 8.9s}
+.sweep{position:absolute;left:0;right:0;top:0;height:30%;background:linear-gradient(90deg,transparent,rgba(210,169,79,.75),transparent);
+  background-size:40% 100%;background-repeat:no-repeat;mix-blend-mode:screen;animation:sweep 1.3s 8.5s cubic-bezier(.3,0,.2,1)}
+@keyframes sweep{from{background-position:-70% 0;opacity:1}to{background-position:170% 0;opacity:0}}
+
+/* phone inserts */
+.dim{position:absolute;inset:-40px;background-size:cover;background-position:center;filter:blur(26px) brightness(.4)}
+.phone{position:absolute;left:230px;top:330px;width:620px;height:1260px;border-radius:84px;border:14px solid #0b0a08;background:#1C1A16;overflow:hidden;
+  box-shadow:0 50px 110px rgba(0,0,0,.7)}
+.home{position:absolute;inset:0;background:linear-gradient(160deg,#3b4a5a,#1d2430 60%,#2a2030);padding:150px 54px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:44px 30px}
+.grid i{display:block;aspect-ratio:1;border-radius:26px;background:rgba(255,255,255,.2)}
+.grid .pp{background:url(../assets/icon.png) center/cover;animation:tap 2.2s 3s}
+@keyframes tap{0%,45%{transform:scale(1);box-shadow:0 0 0 0 rgba(210,169,79,0)}55%{transform:scale(.86);box-shadow:0 0 0 0 rgba(210,169,79,.95)}
+  75%{transform:scale(1.9);box-shadow:0 0 0 60px rgba(210,169,79,0)}100%{transform:scale(1.9)}}
+.grid span{grid-column:2;text-align:center;font-size:21px;margin-top:-32px;font-weight:500}
+.reel{position:absolute;inset:0;background:radial-gradient(460px 420px at 50% 36%,#5b4630,#2b2118 70%,#17120d)}
+.reel .dish{position:absolute;left:50%;top:230px;width:330px;height:330px;margin-left:-165px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffdf7,#e9e0cf);display:grid;place-items:center;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.reel .dish img{width:210px}
+.reel .live{position:absolute;left:36px;top:70px;background:#c0392b;border-radius:10px;padding:6px 16px;font-weight:700;font-size:24px;letter-spacing:.06em}
+.reel .who{position:absolute;left:36px;right:130px;bottom:400px;font-size:27px;line-height:1.35;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+.reel .who b{display:block;font-size:29px}
+.side{position:absolute;right:30px;bottom:420px;display:grid;gap:28px}
+.side i{display:block;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.16);border:3px solid rgba(255,255,255,.75)}
+.side .go{background:#D2A94F;border-color:#fff;animation:pulse .5s 16.6s 2 ease-in-out}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:340px;background:#2a2723;border-radius:40px 40px 0 0;padding:34px;animation:sheet 4.6s 16s}
+@keyframes sheet{0%,24%{transform:translateY(105%)}31%,58%{transform:none}65%,100%{transform:translateY(105%)}}
+.sheet small{display:block;font-size:24px;color:#A39B8E;margin-bottom:20px}
+.apps{display:flex;gap:26px}
+.app{width:116px;text-align:center;font-size:20px;color:#A39B8E}
+.app i{display:block;width:116px;height:116px;border-radius:28px;background:#3a3631;margin-bottom:10px}
+.app.pp{color:#F4F0E8;font-weight:700}
+.app.pp i{background:url(../assets/icon.png) center/cover;animation:tap2 4.6s 16s}
+@keyframes tap2{0%,44%{transform:scale(1);box-shadow:0 0 0 0 rgba(210,169,79,0)}49%{transform:scale(.86);box-shadow:0 0 0 0 rgba(210,169,79,.9)}56%{transform:scale(1);box-shadow:0 0 0 34px rgba(210,169,79,0)}100%{transform:scale(1)}}
+.recipe{position:absolute;left:24px;right:24px;top:150px;background:#FBF8F2;color:#211E17;border-radius:40px;padding-bottom:32px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.6);
+  animation:land .6s 19.1s cubic-bezier(.2,.7,.2,1)}
+@keyframes land{from{opacity:0;transform:translateY(90px) scale(.92)}to{opacity:1;transform:none}}
+.recipe .ph{height:230px;background:radial-gradient(360px 260px at 50% 55%,#6b5238,#2b2118);display:grid;place-items:center}
+.recipe .ph div{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffdf7,#e9e0cf);display:grid;place-items:center}
+.recipe .ph img{width:118px}
+.recipe .in{padding:26px 34px 0}
+.recipe .eb{font-weight:700;font-size:20px;letter-spacing:.2em;color:#4E7259}
+.recipe h3{font-family:Playfair;font-weight:500;font-size:52px;line-height:1.1;margin:8px 0}
+.recipe .meta{font-size:26px;color:#6E6658}
+.recipe .row{display:flex;gap:14px;align-items:center;margin-top:20px;font-size:27px}
+.recipe .n{flex:none;width:42px;height:42px;border-radius:50%;background:#3C5842;color:#F1F7F2;font-weight:700;font-size:22px;display:grid;place-items:center}
+.saved{margin:26px 34px 0;background:linear-gradient(#4A6C50,#334B39);color:#F1F7F2;border-radius:99px;text-align:center;padding:16px;font-weight:700;font-size:28px}
+
+/* end card */
+#end{background:radial-gradient(900px 700px at 8% 4%,rgba(210,169,79,.2),transparent 60%),radial-gradient(1200px 1200px at 50% 45%,#211e19,#141310 70%);animation-name:stay}
+@keyframes stay{0%{opacity:0}14%{opacity:1}100%{opacity:1}}
+#end .icon{position:absolute;left:340px;top:420px;width:400px;height:400px;border-radius:92px;background:url(../assets/icon.png) center/cover;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+#end .line{position:absolute;left:0;right:0;top:888px;text-align:center;font-family:Playfair;font-weight:500;font-size:108px}
+#end .line i{color:#D2A94F}
+#end .cta{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;top:1180px;background:linear-gradient(#4A6C50,#334B39);border-radius:99px;padding:34px 66px;font-weight:700;font-size:46px}
+#end .fine{position:absolute;left:0;right:0;top:1340px;text-align:center;font-size:34px;color:#A39B8E}
+</style></head>
+<body><div id="stage">
+
+  <section class="shot" style="--at:0s;--len:3.1s">
+    <div class="pic" style="--move:pushin;background-image:url(gen/k1.webp)"></div><div class="shade"></div>
+    <div class="cap" style="--d:.4s">&ldquo;What am I going to make for <i>dinner?</i>&rdquo;</div>
+  </section>
+
+  <section class="shot" style="--at:3s;--len:2.3s">
+    <div class="dim" style="background-image:url(gen/k1.webp)"></div>
+    <div class="phone"><div class="home"><div class="grid">
+      <i></i><i></i><i></i><i></i><i></i><i class="pp"></i><i></i><i></i><span>Paper Plate</span><i style="grid-column:1"></i><i></i><i></i><i></i>
+    </div></div></div>
+  </section>
+
+  <section class="shot" style="--at:5.2s;--len:2.4s">
+    <div class="pic" style="--move:pullout;background-image:url(gen/k2.webp)"></div><div class="shade"></div>
+    <div class="flash" style="--d:6.5s"></div>
+    <div class="cap small" style="--d:5.5s">She snaps the pantry.</div>
+  </section>
+
+  <section class="shot" style="--at:7.4s;--len:3.7s">
+    <div class="pantry"><div style="background-image:url(gen/p1.webp)"></div><div class="b" style="background-image:url(gen/pA.webp)"></div><div class="sweep"></div></div>
+    <div class="shade"></div>
+    <div class="cap" style="--d:9.4s">Random shelf. <i>Real dinner.</i></div>
+  </section>
+
+  <section class="shot" style="--at:11s;--len:2.4s">
+    <div class="pic" style="--move:pushin;background-image:url(gen/k6.webp)"></div><div class="shade"></div>
+    <div class="cap small" style="--d:11.3s">Dinner, figured out.</div>
+  </section>
+
+  <section class="shot" style="--at:13.3s;--len:2.9s">
+    <div class="pic" style="--move:drift;background-image:url(gen/k7.webp)"></div><div class="shade"></div>
+    <div class="cap small" style="--d:13.6s">Later, a streamer is cooking something good.</div>
+  </section>
+
+  <section class="shot" style="--at:16s;--len:4.7s">
+    <div class="dim" style="background-image:url(gen/k7.webp)"></div>
+    <div class="phone">
+      <div class="reel"><span class="live">LIVE</span><div class="dish"><img src="../assets/pasta.png"></div>
+        <div class="who"><b>cooking stream</b>creamy garlic penne, start to finish</div>
+        <div class="side"><i></i><i></i><i class="go"></i></div></div>
+      <div class="sheet"><small>Share to</small><div class="apps">
+        <div class="app"><i></i>Messages</div><div class="app pp"><i></i>Paper Plate</div><div class="app"><i></i>Notes</div><div class="app"><i></i>Copy</div></div></div>
+      <div class="recipe"><div class="ph"><div><img src="../assets/pasta.png"></div></div>
+        <div class="in"><div class="eb">FROM A SHARED POST</div><h3>Creamy Garlic Penne</h3><div class="meta">25 min &middot; serves 4 &middot; timed steps</div>
+          <div class="row"><div class="n">1</div>Boil the penne, 11 min</div><div class="row"><div class="n">2</div>Soften the garlic in butter</div></div>
+        <div class="saved">&#10003;&nbsp; In your Recipe Book</div></div>
+    </div>
+  </section>
+
+  <section class="shot" id="end" style="--at:20.6s;--len:3.4s">
+    <div class="icon"></div><div class="line">Forage your <i>kitchen.</i></div>
+    <div class="cta">Join the waitlist</div><div class="fine">Coming to iPhone</div>
+  </section>
+</div>
+<script>if(location.hash!=='#raw'){var s=document.getElementById('stage');function f(){s.style.transform='scale('+Math.min(innerWidth/1080,innerHeight/1920)+')'}addEventListener('resize',f);f()}</script>
+</body></html>
