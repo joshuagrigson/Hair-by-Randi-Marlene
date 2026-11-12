@@ -52,5 +52,65 @@
   "status_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cdeb-58ac-74e0-87e2-7a37f88f8c53/status",
   "response_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cdeb-58ac-74e0-87e2-7a37f88f8c53",
   "file": "gen/v7.mp4"
+ },
+ "k1b": {
+  "model": "fal-ai/flux-2-pro/edit",
+  "status_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0a-f3b7-7e02-b57e-a0f08e8e3d21/status",
+  "response_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0a-f3b7-7e02-b57e-a0f08e8e3d21",
+  "file": "gen/k1b.jpg"
+ },
+ "k6b": {
+  "model": "fal-ai/flux-2-pro/edit",
+  "status_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0a-f5c0-7032-a3ab-9ea5e97eed2f/status",
+  "response_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0a-f5c0-7032-a3ab-9ea5e97eed2f",
+  "file": "gen/k6b.jpg"
+ },
+ "k7b": {
+  "model": "fal-ai/flux-2-pro/edit",
+  "status_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0a-f77c-7550-bc79-5f7c83c07dc4/status",
+  "response_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0a-f77c-7550-bc79-5f7c83c07dc4",
+  "file": "gen/k7b.jpg"
+ },
+ "k9b": {
+  "model": "fal-ai/flux-2-pro/edit",
+  "status_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0b-8db1-7483-9a95-f00981cc3fe4/status",
+  "response_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0b-8db1-7483-9a95-f00981cc3fe4",
+  "file": "gen/k9b.jpg"
+ },
+ "k2b": {
+  "model": "fal-ai/flux-2-pro/edit",
+  "status_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0b-907e-76c1-83bd-a43793be8ee3/status",
+  "response_url": "https://queue.fal.run/fal-ai/flux-2-pro/requests/01a1cf0b-907e-76c1-83bd-a43793be8ee3",
+  "file": "gen/k2b.jpg"
+ },
+ "v1b": {
+  "model": "fal-ai/kling-video/v3/standard/image-to-video",
+  "status_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-de3f-7271-8985-5cdb8acc78d1/status",
+  "response_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-de3f-7271-8985-5cdb8acc78d1",
+  "file": "gen/v1b.mp4"
+ },
+ "v2b": {
+  "model": "fal-ai/kling-video/v3/standard/image-to-video",
+  "status_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-dff8-7a73-9215-259b7101f208/status",
+  "response_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-dff8-7a73-9215-259b7101f208",
+  "file": "gen/v2b.mp4"
+ },
+ "v5b": {
+  "model": "fal-ai/kling-video/v3/standard/image-to-video",
+  "status_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-e1ee-7210-a727-62c9bc1ea5b0/status",
+  "response_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-e1ee-7210-a727-62c9bc1ea5b0",
+  "file": "gen/v5b.mp4"
+ },
+ "v6b": {
+  "model": "fal-ai/kling-video/v3/standard/image-to-video",
+  "status_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-e36c-77a3-9867-ca6ea2473a1f/status",
+  "response_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-e36c-77a3-9867-ca6ea2473a1f",
+  "file": "gen/v6b.mp4"
+ },
+ "v7b": {
+  "model": "fal-ai/kling-video/v3/standard/image-to-video",
+  "status_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-e569-7f91-9aa8-206a45e56d7d/status",
+  "response_url": "https://queue.fal.run/fal-ai/kling-video/requests/01a1cf0b-e569-7f91-9aa8-206a45e56d7d",
+  "file": "gen/v7b.mp4"
  }
 }
