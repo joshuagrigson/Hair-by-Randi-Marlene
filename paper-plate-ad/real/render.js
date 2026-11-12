@@ -28,7 +28,7 @@ const STILLS = { '01-question': 1.2, '02-phone-out': 3.2, '03-tap': 4.6, '04-sna
   for (const [n, t] of Object.entries(STILLS)) { await seek(t); await p.screenshot({ path: path.join(out, `still-${n}.jpg`), quality: 88 }); }
   if (process.argv[2] !== 'stills') {
     for (let f = 0; f < FPS * SECONDS; f++) { await seek(f / FPS); await p.screenshot({ path: path.join(frames, String(f).padStart(4, '0') + '.jpg'), quality: 95 }); }
-    const enc = ['-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '18', '-preset', 'slow', '-movflags', '+faststart', '-c:a', 'aac', '-b:a', '128k'];
+    const enc = ['-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '22', '-preset', 'slow', '-movflags', '+faststart', '-c:a', 'aac', '-b:a', '128k'];
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-framerate', String(FPS), '-i', path.join(frames, '%04d.jpg'), '-f', 'lavfi', '-i', 'anullsrc=r=48000:cl=stereo', '-shortest', ...enc, path.join(out, 'paper-plate-ad-03.mp4')]);
     // same picture with each clip's own sound laid under its shot
     const ins = [], parts = [];

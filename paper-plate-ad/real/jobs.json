@@ -124,5 +124,95 @@
   "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-e08d-7952-b801-84e6209b8805/status",
   "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf25-e08d-7952-b801-84e6209b8805",
   "file": "gen/v8.mp4"
+ },
+ "h2x": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7e-f9a7-72c0-945c-9b3852d467cf/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7e-f9a7-72c0-945c-9b3852d467cf",
+  "file": "gen/h2x.jpg"
+ },
+ "cx": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7e-fbc5-7893-8f57-bcba39fbb39a/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7e-fbc5-7893-8f57-bcba39fbb39a",
+  "file": "gen/cx.jpg"
+ },
+ "pA2": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7e-fe2f-72d1-9229-c7a195d4aa81/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7e-fe2f-72d1-9229-c7a195d4aa81",
+  "file": "gen/pA2.jpg"
+ },
+ "h5x": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-9365-7743-a72b-e8a7b4a974a2/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-9365-7743-a72b-e8a7b4a974a2",
+  "file": "gen/h5x.jpg"
+ },
+ "h6x": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-953a-70b2-80eb-4d4cfe445d87/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-953a-70b2-80eb-4d4cfe445d87",
+  "file": "gen/h6x.jpg"
+ },
+ "c2x": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-9707-78a1-b6bc-11b2cab12c39/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-9707-78a1-b6bc-11b2cab12c39",
+  "file": "gen/c2x.jpg"
+ },
+ "pB2": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-98e5-7131-baf7-376fa0912865/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf7f-98e5-7131-baf7-376fa0912865",
+  "file": "gen/pB2.jpg"
+ },
+ "pA3": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf80-2bf7-7860-94e1-015e44f839f1/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf80-2bf7-7860-94e1-015e44f839f1",
+  "file": "gen/pA3.jpg"
+ },
+ "pB3": {
+  "model": "google/nano-banana-2.1/edit",
+  "status_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf80-72ed-75f3-8082-0eba25dee061/status",
+  "response_url": "https://queue.fal.run/google/nano-banana-2.1/requests/01a1cf80-72ed-75f3-8082-0eba25dee061",
+  "file": "gen/pB3.jpg"
+ },
+ "v3x": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4457-73e1-8324-372ef4e72bd8/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4457-73e1-8324-372ef4e72bd8",
+  "file": "gen/v3x.mp4"
+ },
+ "v4x": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-46a6-7f30-8466-d5dbf82b9826/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-46a6-7f30-8466-d5dbf82b9826",
+  "file": "gen/v4x.mp4"
+ },
+ "v5x": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4911-7413-a614-afa878823f82/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4911-7413-a614-afa878823f82",
+  "file": "gen/v5x.mp4"
+ },
+ "v6x": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4b2e-7ab1-af4a-dfcd9e8d710c/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4b2e-7ab1-af4a-dfcd9e8d710c",
+  "file": "gen/v6x.mp4"
+ },
+ "v7x": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4d29-7b11-8b67-48b37336e6e2/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4d29-7b11-8b67-48b37336e6e2",
+  "file": "gen/v7x.mp4"
+ },
+ "v8x": {
+  "model": "minimax/h3/image-to-video",
+  "status_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4f8e-7980-be11-2421c29041e0/status",
+  "response_url": "https://queue.fal.run/minimax/h3/requests/01a1cf81-4f8e-7980-be11-2421c29041e0",
+  "file": "gen/v8x.mp4"
  }
 }
