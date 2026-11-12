@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
-<title>Paper Plate ad 02: "What am I going to make for dinner?" (storyboard cut)</title>
-<!-- Stills with camera moves, not video. render.js seeks it frame by frame. Phone screens are drawn, not screenshots. -->
+<title>Paper Plate ad 02: "What am I going to make for dinner?"</title>
+<!-- Generated video clips (frames fed in by render.js), drawn phone inserts, captions. render.js seeks it frame by frame. Phone screens are drawn, not screenshots. -->
 <style>
 @font-face{font-family:Playfair;font-weight:500;src:url(../assets/PlayfairDisplay-Medium.ttf)}
 @font-face{font-family:Playfair;font-weight:500;font-style:italic;src:url(../assets/PlayfairDisplay-MediumItalic.ttf)}
@@ -44,7 +44,7 @@ html,body{background:#000;overflow:hidden}
 .home{position:absolute;inset:0;background:linear-gradient(160deg,#3b4a5a,#1d2430 60%,#2a2030);padding:150px 54px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:44px 30px}
 .grid i{display:block;aspect-ratio:1;border-radius:26px;background:rgba(255,255,255,.2)}
-.grid .pp{background:url(../assets/icon.png) center/cover;animation:tap 2.2s 3s}
+.grid .pp{background:url(../assets/icon.png) center/cover;animation:tap 2.2s 4.9s}
 @keyframes tap{0%,45%{transform:scale(1);box-shadow:0 0 0 0 rgba(210,169,79,0)}55%{transform:scale(.86);box-shadow:0 0 0 0 rgba(210,169,79,.95)}
   75%{transform:scale(1.9);box-shadow:0 0 0 60px rgba(210,169,79,0)}100%{transform:scale(1.9)}}
 .grid span{grid-column:2;text-align:center;font-size:21px;margin-top:-32px;font-weight:500}
@@ -56,19 +56,19 @@ html,body{background:#000;overflow:hidden}
 .reel .who b{display:block;font-size:29px}
 .side{position:absolute;right:30px;bottom:420px;display:grid;gap:28px}
 .side i{display:block;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.16);border:3px solid rgba(255,255,255,.75)}
-.side .go{background:#D2A94F;border-color:#fff;animation:pulse .5s 16.6s 2 ease-in-out}
+.side .go{background:#D2A94F;border-color:#fff;animation:pulse .5s 25.1s 2 ease-in-out}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
-.sheet{position:absolute;left:0;right:0;bottom:0;height:340px;background:#2a2723;border-radius:40px 40px 0 0;padding:34px;animation:sheet 4.6s 16s}
+.sheet{position:absolute;left:0;right:0;bottom:0;height:340px;background:#2a2723;border-radius:40px 40px 0 0;padding:34px;animation:sheet 4.6s 24.5s}
 @keyframes sheet{0%,24%{transform:translateY(105%)}31%,58%{transform:none}65%,100%{transform:translateY(105%)}}
 .sheet small{display:block;font-size:24px;color:#A39B8E;margin-bottom:20px}
 .apps{display:flex;gap:26px}
 .app{width:116px;text-align:center;font-size:20px;color:#A39B8E}
 .app i{display:block;width:116px;height:116px;border-radius:28px;background:#3a3631;margin-bottom:10px}
 .app.pp{color:#F4F0E8;font-weight:700}
-.app.pp i{background:url(../assets/icon.png) center/cover;animation:tap2 4.6s 16s}
+.app.pp i{background:url(../assets/icon.png) center/cover;animation:tap2 4.6s 24.5s}
 @keyframes tap2{0%,44%{transform:scale(1);box-shadow:0 0 0 0 rgba(210,169,79,0)}49%{transform:scale(.86);box-shadow:0 0 0 0 rgba(210,169,79,.9)}56%{transform:scale(1);box-shadow:0 0 0 34px rgba(210,169,79,0)}100%{transform:scale(1)}}
 .recipe{position:absolute;left:24px;right:24px;top:150px;background:#FBF8F2;color:#211E17;border-radius:40px;padding-bottom:32px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.6);
-  animation:land .6s 19.1s cubic-bezier(.2,.7,.2,1)}
+  animation:land .6s 27.6s cubic-bezier(.2,.7,.2,1)}
 @keyframes land{from{opacity:0;transform:translateY(90px) scale(.92)}to{opacity:1;transform:none}}
 .recipe .ph{height:230px;background:radial-gradient(360px 260px at 50% 55%,#6b5238,#2b2118);display:grid;place-items:center}
 .recipe .ph div{width:180px;height:180px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#fffdf7,#e9e0cf);display:grid;place-items:center}
@@ -89,44 +89,52 @@ html,body{background:#000;overflow:hidden}
 #end .line i{color:#D2A94F}
 #end .cta{position:absolute;left:0;right:0;margin:0 auto;width:fit-content;top:1180px;background:linear-gradient(#4A6C50,#334B39);border-radius:99px;padding:34px 66px;font-weight:700;font-size:46px}
 #end .fine{position:absolute;left:0;right:0;top:1340px;text-align:center;font-size:34px;color:#A39B8E}
+.vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shelf{position:absolute;inset:0;animation:var(--pan) var(--len) var(--at) cubic-bezier(.4,0,.2,1)}
+@keyframes top{from{transform:translateY(30%) scale(1.6)}to{transform:translateY(30%) scale(1.6)}}
+@keyframes down{0%{transform:translateY(30%) scale(1.6)}30%,100%{transform:translateY(11%) scale(1.6)}}
 </style></head>
 <body><div id="stage">
 
-  <section class="shot" style="--at:0s;--len:3.1s">
-    <div class="pic" style="--move:pushin;background-image:url(gen/k1.webp)"></div><div class="shade"></div>
+  <section class="shot" style="--at:0s;--len:5.1s">
+    <img class="vid" data-clip="v1" data-a="0" data-b="5"><div class="shade"></div>
     <div class="cap" style="--d:.4s">&ldquo;What am I going to make for <i>dinner?</i>&rdquo;</div>
   </section>
 
-  <section class="shot" style="--at:3s;--len:2.3s">
+  <section class="shot" style="--at:4.9s;--len:2.1s">
     <div class="dim" style="background-image:url(gen/k1.webp)"></div>
     <div class="phone"><div class="home"><div class="grid">
       <i></i><i></i><i></i><i></i><i></i><i class="pp"></i><i></i><i></i><span>Paper Plate</span><i style="grid-column:1"></i><i></i><i></i><i></i>
     </div></div></div>
   </section>
 
-  <section class="shot" style="--at:5.2s;--len:2.4s">
-    <div class="pic" style="--move:pullout;background-image:url(gen/k2.webp)"></div><div class="shade"></div>
-    <div class="flash" style="--d:6.5s"></div>
-    <div class="cap small" style="--d:5.5s">She snaps the pantry.</div>
+  <section class="shot" style="--at:6.8s;--len:3.6s">
+    <img class="vid" data-clip="v2" data-a="6.8" data-b="10.4"><div class="shade"></div>
+    <div class="flash" style="--d:8.5s"></div>
+    <div class="cap small" style="--d:7.1s">One photo of the pantry.</div>
   </section>
 
-  <section class="shot" style="--at:7.4s;--len:3.7s">
-    <div class="pantry"><div style="background-image:url(gen/p1.webp)"></div><div class="b" style="background-image:url(gen/pA.webp)"></div><div class="sweep"></div></div>
-    <div class="shade"></div>
-    <div class="cap" style="--d:9.4s">Random shelf. <i>Real dinner.</i></div>
+  <section class="shot" style="--at:10.2s;--len:4.3s">
+    <div class="shelf" style="--pan:top"><img class="vid" data-clip="v3" data-a="10.2" data-b="14.5"></div><div class="shade"></div>
+    <div class="cap" style="--d:12.6s">Random shelf. <i>Real dinner.</i></div>
   </section>
 
-  <section class="shot" style="--at:11s;--len:2.4s">
-    <div class="pic" style="--move:pushin;background-image:url(gen/k6.webp)"></div><div class="shade"></div>
-    <div class="cap small" style="--d:11.3s">Dinner, figured out.</div>
+  <section class="shot" style="--at:14.3s;--len:4.3s">
+    <div class="shelf" style="--pan:down"><img class="vid" data-clip="v4" data-a="14.3" data-b="18.6"></div><div class="shade"></div>
+    <div class="cap" style="--d:16.9s">And <i>another one.</i></div>
   </section>
 
-  <section class="shot" style="--at:13.3s;--len:2.9s">
-    <div class="pic" style="--move:drift;background-image:url(gen/k7.webp)"></div><div class="shade"></div>
-    <div class="cap small" style="--d:13.6s">Later, a streamer is cooking something good.</div>
+  <section class="shot" style="--at:18.4s;--len:2.9s">
+    <img class="vid" data-clip="v5" data-a="18.4" data-b="21.3"><div class="shade"></div>
+    <div class="cap small" style="--d:18.7s">Dinner, figured out.</div>
   </section>
 
-  <section class="shot" style="--at:16s;--len:4.7s">
+  <section class="shot" style="--at:21.1s;--len:3.6s">
+    <img class="vid" data-clip="v6" data-a="21.1" data-b="24.7"><div class="shade"></div>
+    <div class="cap small" style="--d:21.4s">Later, a streamer is cooking something good.</div>
+  </section>
+
+  <section class="shot" style="--at:24.5s;--len:4.7s">
     <div class="dim" style="background-image:url(gen/k7.webp)"></div>
     <div class="phone">
       <div class="reel"><span class="live">LIVE</span><div class="dish"><img src="../assets/pasta.png"></div>
@@ -141,7 +149,12 @@ html,body{background:#000;overflow:hidden}
     </div>
   </section>
 
-  <section class="shot" id="end" style="--at:20.6s;--len:3.4s">
+  <section class="shot" style="--at:29.1s;--len:4.6s">
+    <img class="vid" data-clip="v7" data-a="29.1" data-b="33.7"><div class="shade"></div>
+    <div class="cap small" style="--d:31.6s">Dinner&rsquo;s handled. Tomorrow&rsquo;s too.</div>
+  </section>
+
+  <section class="shot" id="end" style="--at:33.5s;--len:3.5s">
     <div class="icon"></div><div class="line">Forage your <i>kitchen.</i></div>
     <div class="cta">Join the waitlist</div><div class="fine">Coming to iPhone</div>
   </section>
