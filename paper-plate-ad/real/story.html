@@ -13,7 +13,7 @@ html,body{background:#000;overflow:hidden}
 #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#F2ECE1;font-family:DM,sans-serif;color:#F4F0E8;transform-origin:0 0}
 #stage *{animation-fill-mode:both;animation-timing-function:linear}
 .shot{position:absolute;inset:0;opacity:0;animation:shot var(--len) var(--at)}
-@keyframes shot{0%{opacity:0}5%{opacity:1}94%{opacity:1}100%{opacity:0}}
+@keyframes shot{0%{opacity:0}.01%{opacity:1}99.99%{opacity:1}100%{opacity:0}}
 .pic{position:absolute;inset:0;background-size:cover;background-position:center;animation:var(--move) var(--len) var(--at)}
 @keyframes pushin{from{transform:scale(1.02)}to{transform:scale(1.16)}}
 @keyframes pullout{from{transform:scale(1.18)}to{transform:scale(1.04)}}
@@ -123,7 +123,7 @@ html,body{background:#000;overflow:hidden}
 <body><div id="stage">
 
   <section class="shot" style="--at:0s;--len:3.6s">
-    <div class="z" style="--o:50% 42%;--k:1.3"><div class="hand"><img class="vid" data-clip="v1" data-a="0" data-b="3.6" data-s="1.2" data-e="4.8"></div></div>
+    <div class="z" style="--o:50% 27%;--k:1.3"><div class="hand"><img class="vid" data-clip="v1" data-a="0" data-b="3.6" data-s="1.2" data-e="4.8"></div></div>
     <div class="cap" style="--d:0.3s">&ldquo;What am I going to make for <i>dinner?</i>&rdquo;</div>
   </section>
 
